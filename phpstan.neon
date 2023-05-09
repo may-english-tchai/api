@@ -1,0 +1,19 @@
+parameters:
+    level: 9
+    paths:
+        - src
+        - tests
+
+    symfony:
+        container_xml_path: var/cache/dev/App_KernelDevDebugContainer.xml
+
+    doctrine :
+        objectManagerLoader : tests/object-manager.php
+
+    ignoreErrors:
+        - "#type mapping mismatch: property can contain#"
+
+    excludePaths:
+        - src/Kernel.php
+
+    checkGenericClassInNonGenericObjectType: false
