@@ -8,22 +8,22 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-trait PriceEntityTrait
+trait AmountEntityTrait
 {
-    #[Groups(['price', 'price:write'])]
+    #[Groups(['amount', 'amount:write'])]
     #[Assert\NotBlank]
     #[Assert\PositiveOrZero]
     #[ORM\Column]
-    protected float $price = 0.00;
+    protected float $amount = 0.00;
 
-    public function getPrice(): float
+    public function getAmount(): float
     {
-        return $this->price;
+        return $this->amount;
     }
 
-    public function setPrice(float $price): static
+    public function setAmount(float $amount): static
     {
-        $this->price = $price;
+        $this->amount = $amount;
 
         return $this;
     }
