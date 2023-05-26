@@ -14,7 +14,7 @@ trait SoftDeleteableEntityTrait
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     protected ?\DateTime $deletedAt = null;
 
-    public function setDeletedAt(?\DateTime $deletedAt = null): static
+    public function setDeletedAt(\DateTime $deletedAt = null): static
     {
         $this->deletedAt = $deletedAt;
 

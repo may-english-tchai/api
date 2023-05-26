@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Interface\SoftDeleteableInterface;
+use App\Interface\TimestampableInterface;
 use App\Repository\PaymentRepository;
 use App\Trait\AmountEntityTrait;
 use App\Trait\CommentEntityTrait;
@@ -11,11 +13,10 @@ use App\Trait\TimestampableEntityTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-
 #[UniqueEntity(fields: ['reference'])]
 #[ORM\UniqueConstraint(fields: ['reference'])]
 #[ORM\Entity(repositoryClass: PaymentRepository::class)]
-class Payment
+class Payment implements TimestampableInterface, SoftDeleteableInterface
 {
     use IdEntityTrait;
     use AmountEntityTrait;
@@ -29,6 +30,11 @@ class Payment
     #[ORM\ManyToOne(inversedBy: 'payments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Participation $participation = null;
+
+    public function __toString(): string
+    {
+        return sprintf('%s - %s', $this->getReference(), $this->getParticipation());
+    }
 
     public function getReference(): ?string
     {

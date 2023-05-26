@@ -4,10 +4,10 @@ namespace App\Processor;
 
 use App\Exception\EntityValidationException;
 use App\Interface\EntityInterface;
-use Fidry\AliceDataFixtures\ProcessorInterface;
+// use Fidry\AliceDataFixtures\ProcessorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-final readonly class EntityValidationProcessor implements ProcessorInterface
+final readonly class EntityValidationProcessor // implements ProcessorInterface
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
@@ -15,8 +15,6 @@ final readonly class EntityValidationProcessor implements ProcessorInterface
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @throws EntityValidationException
      */
     public function preProcess(string $id, object $object): void
@@ -43,12 +41,5 @@ final readonly class EntityValidationProcessor implements ProcessorInterface
             );
             throw new EntityValidationException($message);
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function postProcess(string $id, object $object): void
-    {
     }
 }

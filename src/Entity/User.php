@@ -2,10 +2,14 @@
 
 namespace App\Entity;
 
+use App\Interface\TimestampableInterface;
 use App\Repository\UserRepository;
 use App\Trait\EmailEntityTrait;
 use App\Trait\IdEntityTrait;
 use App\Trait\IsEnabledEntityTrait;
+use App\Trait\NameEntityTrait;
+use App\Trait\SurnameEntityTrait;
+use App\Trait\TimestampableEntityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,24 +18,38 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, TimestampableInterface
 {
     use IdEntityTrait;
     use EmailEntityTrait;
+    use NameEntityTrait;
+    use SurnameEntityTrait;
     use IsEnabledEntityTrait;
+    use TimestampableEntityTrait;
 
+    /**
+     * @var array<int, string>
+     */
     #[ORM\Column]
     private array $roles = [];
 
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\OneToMany(mappedBy: 'use', targetEntity: Participation::class, orphanRemoval: true)]
+    /**
+     * @var Collection<int, Participation>
+     */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Participation::class, orphanRemoval: true)]
     private Collection $participations;
 
     public function __construct()
     {
         $this->participations = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->getName();
     }
 
     /**
@@ -46,6 +64,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @see UserInterface
+     *
+     * @return array<int, string>
      */
     public function getRoles(): array
     {
@@ -56,6 +76,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
+    /**
+     * @param array<int, string> $roles
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -66,7 +89,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -81,7 +104,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
@@ -107,12 +130,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeParticipation(Participation $participation): self
     {
-        if ($this->participations->removeElement($participation)) {
-            // set the owning side to null (unless already changed)
-            if ($participation->getUser() === $this) {
-                $participation->setUser(null);
-            }
+        // set the owning side to null (unless already changed)
+        if (!$this->participations->removeElement($participation)) {
+            return $this;
         }
+
+        if ($participation->getUser() !== $this) {
+            return $this;
+        }
+
+        $participation->setUser(null);
 
         return $this;
     }

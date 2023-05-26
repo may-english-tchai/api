@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
 jobs:
-  build:
+  analyze:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -26,6 +26,10 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
+      - name: Analyzes
+        run:  |
+          APP_ENV=test php bin/console doctrine:schema:create
+          make analyze
       - name: Run tests
         run:  |
           APP_ENV=test php bin/console doctrine:schema:create

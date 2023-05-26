@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use App\Interface\SoftDeleteableInterface;
+use App\Interface\TimestampableInterface;
 use App\Repository\AvailabilityRepository;
 use App\Trait\CommentEntityTrait;
 use App\Trait\IdEntityTrait;
@@ -20,7 +22,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[UniqueEntity(fields: ['start', 'teacher'])]
 #[ORM\UniqueConstraint(fields: ['start', 'teacher'])]
 #[ORM\Entity(repositoryClass: AvailabilityRepository::class)]
-class Availability
+class Availability implements TimestampableInterface, SoftDeleteableInterface
 {
     use IdEntityTrait;
     use PriceEntityTrait;
@@ -57,6 +59,11 @@ class Availability
     public function __construct()
     {
         $this->participations = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return sprintf('%s - %s', $this->getStart()?->format('Y-m-d H:i'), $this->getTeacher());
     }
 
     public function getStart(): ?\DateTimeInterface
@@ -151,12 +158,16 @@ class Availability
 
     public function removeParticipation(Participation $participation): self
     {
-        if ($this->participations->removeElement($participation)) {
-            // set the owning side to null (unless already changed)
-            if ($participation->getAvailability() === $this) {
-                $participation->setAvailability(null);
-            }
+        // set the owning side to null (unless already changed)
+        if (!$this->participations->removeElement($participation)) {
+            return $this;
         }
+
+        if ($participation->getAvailability() !== $this) {
+            return $this;
+        }
+
+        $participation->setAvailability(null);
 
         return $this;
     }

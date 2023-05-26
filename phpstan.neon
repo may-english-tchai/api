@@ -7,11 +7,8 @@ parameters:
     symfony:
         container_xml_path: var/cache/dev/App_KernelDevDebugContainer.xml
 
-    doctrine :
-        objectManagerLoader : tests/object-manager.php
-
-    ignoreErrors:
-        - "#type mapping mismatch: property can contain#"
+    #doctrine :
+    #    objectManagerLoader : tests/object-manager.php
 
     excludePaths:
         - src/Kernel.php

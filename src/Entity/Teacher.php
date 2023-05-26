@@ -3,35 +3,34 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use App\Interface\SoftDeleteableInterface;
+use App\Interface\TimestampableInterface;
 use App\Repository\TeacherRepository;
 use App\Trait\EmailEntityTrait;
 use App\Trait\IdEntityTrait;
 use App\Trait\IsEnabledEntityTrait;
 use App\Trait\NameEntityTrait;
 use App\Trait\SoftDeleteableEntityTrait;
+use App\Trait\SurnameEntityTrait;
 use App\Trait\TimestampableEntityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource()]
 #[UniqueEntity(fields: ['email'])]
 #[ORM\UniqueConstraint(fields: ['email'])]
 #[ORM\Entity(repositoryClass: TeacherRepository::class)]
-class Teacher
+class Teacher implements TimestampableInterface, SoftDeleteableInterface
 {
     use IdEntityTrait;
     use NameEntityTrait;
+    use SurnameEntityTrait;
     use EmailEntityTrait;
     use IsEnabledEntityTrait;
     use TimestampableEntityTrait;
     use SoftDeleteableEntityTrait;
-
-    #[Assert\Length(max: 255)]
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $surname = null;
 
     #[ORM\ManyToMany(targetEntity: Language::class, mappedBy: 'teachers')]
     private Collection $languages;
@@ -39,6 +38,11 @@ class Teacher
     public function __construct()
     {
         $this->languages = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName().' '.$this->getSurname();
     }
 
     public function getSurname(): ?string
