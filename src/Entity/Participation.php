@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use App\Interface\SoftDeleteableInterface;
+use App\Interface\TimestampableInterface;
 use App\Repository\ParticipationRepository;
 use App\Trait\AmountEntityTrait;
 use App\Trait\IdEntityTrait;
@@ -17,7 +19,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[UniqueEntity(fields: ['availability', 'user'])]
 #[ORM\UniqueConstraint(fields: ['availability', 'user'])]
 #[ORM\Entity(repositoryClass: ParticipationRepository::class)]
-class Participation
+class Participation implements TimestampableInterface, SoftDeleteableInterface
 {
     use IdEntityTrait;
     use AmountEntityTrait;
@@ -38,6 +40,11 @@ class Participation
     public function __construct()
     {
         $this->payments = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return sprintf('%s - %s', $this->getAvailability(), $this->getUser());
     }
 
     public function getUser(): ?User
@@ -84,12 +91,16 @@ class Participation
 
     public function removePayment(Payment $payment): self
     {
-        if ($this->payments->removeElement($payment)) {
-            // set the owning side to null (unless already changed)
-            if ($payment->getParticipation() === $this) {
-                $payment->setParticipation(null);
-            }
+        // set the owning side to null (unless already changed)
+        if (!$this->payments->removeElement($payment)) {
+            return $this;
         }
+
+        if ($payment->getParticipation() !== $this) {
+            return $this;
+        }
+
+        $payment->setParticipation(null);
 
         return $this;
     }

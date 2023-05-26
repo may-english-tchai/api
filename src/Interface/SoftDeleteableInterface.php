@@ -6,7 +6,7 @@ namespace App\Interface;
 
 interface SoftDeleteableInterface extends EntityInterface
 {
-    public function setDeletedAt(?\DateTime $deletedAt = null): static;
+    public function setDeletedAt(\DateTime $deletedAt = null): static;
 
     public function getDeletedAt(): ?\DateTime;
 

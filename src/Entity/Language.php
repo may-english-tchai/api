@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Interface\EntityInterface;
 use App\Repository\LanguageRepository;
 use App\Trait\CodeEntityTrait;
 use App\Trait\IdEntityTrait;
@@ -12,10 +13,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-
 #[UniqueEntity(fields: ['code'])]
 #[ORM\Entity(repositoryClass: LanguageRepository::class)]
-class Language
+class Language implements EntityInterface
 {
     use IdEntityTrait;
     use CodeEntityTrait;
@@ -28,6 +28,11 @@ class Language
     public function __construct()
     {
         $this->teachers = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->getLabel();
     }
 
     /**
