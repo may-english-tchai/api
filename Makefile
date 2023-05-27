@@ -30,6 +30,13 @@ rector:
 
 analyze: stan cs-fix rector
 
+## —— Git ————————————————————————————————————————————————————————————————
+
+type ?= feat
+auto-commit: ## Auto commit with branch name
+	@git commit -am "${type}: #$(shell git branch --show-current | sed 's/-/ /g')"
+
+## —— Git ————————————————————————————————————————————————————————————————
 docker-install: Dockerfile docker-compose.yaml clean docker-down docker-build docker-up docker-ps docker-logs ## Reset and install your environment
 
 docker-up: docker-down ## Start the docker container
