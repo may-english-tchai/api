@@ -7,6 +7,9 @@ CONSOLE=symfony console
 help: ## Outputs this help screen
 	@grep -E '(^[a-zA-Z0-9_-]+:.*?## .*$$)|(^## )' Makefile | awk 'BEGIN {FS = ":.*?## "}{printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
+sf-cc:
+	$(CONSOLE) c:c
+
 composer-install:
 	$(COMPOSER) install
 
@@ -33,7 +36,8 @@ analyze: stan cs-fix rector
 ## —— Git ————————————————————————————————————————————————————————————————
 
 type ?= feat
-auto-commit: ## Auto commit with branch name
+auto-commit: analyze ## Auto commit with branch name
+	git add .
 	@git commit -am "${type}: #$(shell git branch --show-current | sed 's/-/ /g')"
 
 ## —— Git ————————————————————————————————————————————————————————————————
