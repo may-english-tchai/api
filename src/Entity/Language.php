@@ -65,6 +65,7 @@ class Language implements EntityInterface
     {
         if (!$this->teachers->contains($teacher)) {
             $this->teachers->add($teacher);
+            $teacher->addLanguage($this);
         }
 
         return $this;
