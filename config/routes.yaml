@@ -11,3 +11,6 @@ homepage:
     defaults:
         path: /admin
         permanent: true
+
+api_login:
+    path: /api/login
