@@ -13,7 +13,7 @@ use App\Trait\SoftDeleteableEntityTrait;
 use App\Trait\TimestampableEntityTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Asserts;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource()]
 #[UniqueEntity(fields: ['name'])]
@@ -27,15 +27,15 @@ class Restaurant implements TimestampableInterface, SoftDeleteableInterface
     use TimestampableEntityTrait;
     use SoftDeleteableEntityTrait;
 
-    #[Asserts\Length(max: 255)]
+    #[Assert\Length(max: 255)]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $address = null;
 
-    #[Asserts\Length(max: 255)]
+    #[Assert\Length(max: 255)]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $city = null;
 
-    #[Asserts\Length(max: 10)]
+    #[Assert\Length(max: 10)]
     #[ORM\Column(length: 10, nullable: true)]
     private ?string $postcode = null;
 

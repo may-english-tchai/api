@@ -4,6 +4,10 @@ namespace App\Controller\Admin;
 
 use App\Entity\Payment;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 
 class PaymentCrudController extends AbstractCrudController
 {
@@ -12,14 +16,15 @@ class PaymentCrudController extends AbstractCrudController
         return Payment::class;
     }
 
-    /*
     public function configureFields(string $pageName): iterable
     {
-        return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
-        ];
+        yield IdField::new('id')->hideOnForm();
+        yield AssociationField::new('participation');
+        yield MoneyField::new('amount')->setCurrency('EUR');
+        yield Field::new('reference');
+        yield Field::new('comment');
+        yield Field::new('createdAt')->hideOnForm();
+        yield Field::new('updatedAt')->hideOnForm();
+        yield Field::new('deletedAt')->hideOnForm();
     }
-    */
 }
