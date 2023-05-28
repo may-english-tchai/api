@@ -2,6 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Interface\SoftDeleteableInterface;
 use App\Interface\TimestampableInterface;
 use App\Repository\PaymentRepository;
@@ -13,6 +20,17 @@ use App\Trait\TimestampableEntityTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
+#[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Put(),
+        new Post(),
+        new Patch(),
+        new Delete(),
+    ],
+    security: 'is_granted("ROLE_USER")'
+)]
 #[UniqueEntity(fields: ['reference'])]
 #[ORM\UniqueConstraint(fields: ['reference'])]
 #[ORM\Entity(repositoryClass: PaymentRepository::class)]
