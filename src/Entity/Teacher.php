@@ -48,7 +48,7 @@ class Teacher implements TimestampableInterface, SoftDeleteableInterface
     use TimestampableEntityTrait;
     use SoftDeleteableEntityTrait;
 
-    #[ORM\ManyToMany(targetEntity: Language::class, mappedBy: 'teachers')]
+    #[ORM\ManyToMany(targetEntity: Language::class, mappedBy: 'teachers', fetch: 'EXTRA_LAZY')]
     private Collection $languages;
 
     public function __construct()
