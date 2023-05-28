@@ -2,6 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Interface\TimestampableInterface;
 use App\Repository\UserRepository;
 use App\Trait\EmailEntityTrait;
@@ -16,6 +23,17 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+#[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Put(),
+        new Post(security: 'is_granted("PUBLIC_ACCESS")'),
+        new Patch(),
+        new Delete(security: 'is_granted("ROLE_ADMIN")'),
+    ],
+    security: 'is_granted("ROLE_USER")'
+)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, TimestampableInterface

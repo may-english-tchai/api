@@ -2,6 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Interface\EntityInterface;
 use App\Repository\LanguageRepository;
 use App\Trait\CodeEntityTrait;
@@ -13,6 +20,17 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
+#[ApiResource(
+    operations: [
+        new Get(security: 'is_granted("PUBLIC_ACCESS")'),
+        new GetCollection(security: 'is_granted("PUBLIC_ACCESS")'),
+        new Put(),
+        new Post(),
+        new Patch(),
+        new Delete(),
+    ],
+    security: 'is_granted("ROLE_ADMIN")'
+)]
 #[UniqueEntity(fields: ['code'])]
 #[ORM\Entity(repositoryClass: LanguageRepository::class)]
 class Language implements EntityInterface
