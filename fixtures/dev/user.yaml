@@ -1,0 +1,7 @@
+App\Entity\User:
+    user_admin:
+        email: mkl.devops@gmail.com
+        roles: [ROLE_SUPER_ADMIN]
+        name: Fahari
+        surname: Hamada Sidi
+        password: \$2y\$13\$VFQOH53mYNwKY.86xNMVRuqu.NYDT5uOLZrU9jYfxLoHO/tKGnDPG

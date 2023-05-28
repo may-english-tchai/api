@@ -10,6 +10,13 @@ COPY --from=php_extension_installer --link /usr/bin/install-php-extensions /usr/
 
 RUN apk add --no-cache $PHPIZE_DEPS git build-base zsh shadow
 
+RUN set -eux; \
+    install-php-extensions intl zip apcu opcache
+
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+COPY --link docker/app.ini $PHP_INI_DIR/conf.d/
+COPY --link docker/app.prod.ini $PHP_INI_DIR/conf.d/
+
 # Symfony cli
 RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.alpine.sh' | sh
 RUN apk add symfony-cli
