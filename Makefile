@@ -22,6 +22,9 @@ doctrine-migration:
 doctrine-migrate:
 	$(CONSOLE) doctrine:migrations:migrate -n
 
+fixtures-load:
+	$(CONSOLE) hautelook:fixtures:load -n
+
 stan:
 	./vendor/bin/phpstan analyse
 

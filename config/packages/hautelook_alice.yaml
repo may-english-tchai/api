@@ -1,0 +1,11 @@
+when@dev:
+    hautelook_alice:
+        fixtures_path:
+            - fixtures/default
+            - fixtures/dev
+
+when@test:
+    hautelook_alice:
+        fixtures_path:
+            - fixtures/default
+            - fixtures/test

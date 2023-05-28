@@ -10,6 +10,9 @@ use App\Entity\Payment;
 use App\Entity\Restaurant;
 use App\Entity\Teacher;
 use App\Entity\User;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -30,6 +33,14 @@ final class DashboardController extends AbstractDashboardController
         $url = $this->adminUrlGenerator->setController(AvailabilityCrudController::class)->generateUrl();
 
         return $this->redirect($url);
+    }
+
+    public function configureActions(): Actions
+    {
+        return parent::configureActions()
+            ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ->add(Crud::PAGE_EDIT, Action::SAVE_AND_ADD_ANOTHER)
+        ;
     }
 
     public function configureDashboard(): Dashboard
