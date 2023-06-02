@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Availability;
 use App\Entity\AvailabilityStatus;
 use App\Entity\Language;
+use App\Entity\Message;
 use App\Entity\Participation;
 use App\Entity\Payment;
 use App\Entity\Restaurant;
@@ -62,5 +63,8 @@ final class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Languages', 'fas fa-list', Language::class);
         yield MenuItem::linkToCrud('Teachers', 'fas fa-list', Teacher::class);
         yield MenuItem::linkToCrud('Restaurants', 'fas fa-list', Restaurant::class);
+
+        yield MenuItem::section('Messages');
+        yield MenuItem::linkToCrud('Message', 'fas fa-list', Message::class);
     }
 }

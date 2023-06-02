@@ -49,7 +49,7 @@ test:
 ## —— Git ————————————————————————————————————————————————————————————————
 
 type ?= feat
-auto-commit: analyze ## Auto commit with branch name
+commit: analyze ## Auto commit with branch name
 	git add .
 	@git commit -am "${type}: #$(shell git branch --show-current | sed 's/-/ /g')"
 
