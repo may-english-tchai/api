@@ -1,0 +1,19 @@
+App\Entity\Language:
+    fr:
+        label: Français
+        code: fr_FR
+    en:
+        label: English
+        code: en_US
+    de:
+        label: Deutsch
+        code: dede_DE
+    es:
+        label: Español
+        code: es_ES
+    it:
+        label: Italien
+        code: it_IT
+    ma:
+        label: Mahorais
+        code: ma
