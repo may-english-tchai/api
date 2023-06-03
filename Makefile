@@ -57,7 +57,7 @@ git-rebase:
 	git rebase origin/main
 
 type ?= feat
-message ?= '#$(shell git branch --show-current | sed "s/-/ /g")'
+message ?= \#$(shell git branch --show-current | sed "s/-/ /g")
 git-auto-commit:
 	git add .
 	@git commit -m "${type}: ${message}" || true
