@@ -4,6 +4,11 @@ namespace App\Controller\Admin;
 
 use App\Entity\Message;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class MessageCrudController extends AbstractCrudController
 {
@@ -12,14 +17,15 @@ class MessageCrudController extends AbstractCrudController
         return Message::class;
     }
 
-    /*
     public function configureFields(string $pageName): iterable
     {
-        return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
-        ];
+        yield IdField::new('id')->hideOnForm();
+        yield AssociationField::new('category');
+        yield TextField::new('subject');
+        yield TextEditorField::new('text');
+        yield Field::new('isEnabled');
+        yield Field::new('createdAt')->hideOnForm();
+        yield Field::new('updatedAt')->hideOnForm();
+        yield Field::new('deletedAt')->hideOnForm();
     }
-    */
 }

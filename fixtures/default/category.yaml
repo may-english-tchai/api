@@ -1,0 +1,17 @@
+App\Entity\Category:
+    message:
+        id: 04cdc624-b4ae-474a-ac47-150aaa6741dc
+        code: message
+        label: Message
+    notification:
+        id: 2fcf53ab-3b07-486e-a01c-a2bdd35a66c2
+        code: notification
+        label: Notification
+    testimony:
+        id: 3b19f999-672b-4090-a228-5e4f75845d7a
+        code: testimony
+        label: Témoignage
+    contact:
+        id: 4cd16979-9f85-411f-bb04-fd660df5c8de
+        code: contact
+        label: Contact

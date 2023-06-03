@@ -23,12 +23,12 @@ if [ ! -f composer.json ]; then
 
     rm -Rf tmp/
 else
-	symfony composer install
+	make composer-install
 fi
 
 test -f env.local || touch .env.local
 
-symfony console doctrine:migrations:up-to-date && symfony console doctrine:migrations:migrate -n
+make doctrine-migrate
 
 chmod -R 777 ./
 
