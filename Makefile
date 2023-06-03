@@ -60,7 +60,7 @@ type ?= feat
 message ?= '#$(shell git branch --show-current | sed "s/-/ /g")'
 git-auto-commit:
 	git add .
-	@git commit -m "${type}: ${message}"
+	@git commit -m "${type}: ${message}" || true
 
 GIT_CURRENT_BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
 git-push:
