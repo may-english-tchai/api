@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Availability;
 use App\Entity\AvailabilityStatus;
+use App\Entity\Category;
 use App\Entity\Language;
 use App\Entity\Message;
 use App\Entity\Participation;
@@ -66,5 +67,6 @@ final class DashboardController extends AbstractDashboardController
 
         yield MenuItem::section('Messages');
         yield MenuItem::linkToCrud('Message', 'fas fa-list', Message::class);
+        yield MenuItem::linkToCrud('Category', 'fas fa-list', Category::class);
     }
 }

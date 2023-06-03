@@ -21,13 +21,19 @@ doctrine-migration:
 	$(CONSOLE) make:migration
 
 doctrine-migrate:
-	$(CONSOLE) doctrine:migrations:migrate -n
+	$(CONSOLE) doctrine:migrations:up-to-date || $(CONSOLE) doctrine:migrations:migrate -n
 
 fixtures-load:
 	$(CONSOLE) hautelook:fixtures:load -n
 
 jwt-generate:
 	$(CONSOLE) lexik:jwt:generate-keypair --skip-if-exists
+
+lint:
+	$(CONSOLE) lint:container
+	$(CONSOLE) lint:yaml --parse-tags config/
+	$(CONSOLE) lint:twig templates/
+	$(CONSOLE) doctrine:schema:validate
 
 stan:
 	./vendor/bin/phpstan analyse
@@ -38,7 +44,7 @@ cs-fix:
 rector:
 	./vendor/bin/rector
 
-analyze: stan cs-fix rector
+analyze: lint stan cs-fix rector
 
 test:
 	$(CONSOLE) doctrine:schema:drop --force --env=test
@@ -47,14 +53,23 @@ test:
 	APP_ENV=test ./vendor/bin/phpunit
 
 ## —— Git ————————————————————————————————————————————————————————————————
+git-rebase:
+	git rebase origin/main
 
 type ?= feat
-commit: analyze ## Auto commit with branch name
+message ?= \#$(shell git branch --show-current | sed "s/-/ /g")
+git-auto-commit:
 	git add .
-	@git commit -am "${type}: #$(shell git branch --show-current | sed 's/-/ /g')"
+	@git commit -m "${type}: ${message}" || true
 
-## —— Git ————————————————————————————————————————————————————————————————
-docker-install: Dockerfile docker-compose.yaml clean docker-down docker-build docker-up docker-ps docker-logs ## Reset and install your environment
+GIT_CURRENT_BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
+git-push:
+	git push origin "$(GIT_CURRENT_BRANCH)"
+
+commit: analyze git-auto-commit git-rebase git-push
+
+## —— Docker ————————————————————————————————————————————————————————————————
+docker-install: Dockerfile docker-compose.yaml docker-down docker-build docker-up docker-ps docker-logs ## Reset and install your environment
 
 docker-up: docker-down ## Start the docker container
 	$(DOCKER) up -d
@@ -73,3 +88,6 @@ docker-down: ## down the stack
 
 docker-sh: ## Connect to the docker container
 	$(DOCKER) exec -it api zsh
+
+deploy: git-rebase docker-down docker-build docker-up docker-ps docker-logs ## Deploy the application
+

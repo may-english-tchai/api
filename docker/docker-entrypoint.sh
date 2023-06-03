@@ -11,9 +11,9 @@ if [ ! -f composer.json ]; then
 
     git config --global user.email "you@example.com"
     git config --global user.name "Your Name"
-    
+
     symfony new --webapp tmp
-    
+
     cd tmp
     rm -rf docker-compose* .git
     symfony composer require "php:>=$PHP_VERSION"
@@ -22,13 +22,13 @@ if [ ! -f composer.json ]; then
     cd -
 
     rm -Rf tmp/
+else
+	symfony composer install
 fi
 
-if [ ! -d vendor ]; then
-    symfony composer install
-fi
+test -f env.local || touch .env.local
 
-touch .env.local
+symfony console doctrine:migrations:up-to-date && symfony console doctrine:migrations:migrate -n
 
 chmod -R 777 ./
 

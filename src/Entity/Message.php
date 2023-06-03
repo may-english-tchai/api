@@ -49,6 +49,9 @@ class Message implements EntityInterface
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $text = null;
 
+    #[ORM\ManyToOne]
+    private ?Category $category = null;
+
     public function __toString(): string
     {
         return (string) $this->getSubject();
@@ -98,6 +101,18 @@ class Message implements EntityInterface
     public function setText(?string $text): self
     {
         $this->text = $text;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }
