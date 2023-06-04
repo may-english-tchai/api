@@ -1,0 +1,25 @@
+App\Entity\Message:
+    testimony_1:
+        id: 55170d0c-4bf4-42c7-8fd4-785bb5dcdc35
+        category: "@category_testimony"
+        text: "Apprendre l'anglais dans une ambiance conviviale de café-restaurant ? Une expérience incroyable ! Conversations animées, jeux interactifs, enseignants sympathiques. Un moyen efficace et agréable d'améliorer ses compétences en anglais."
+    messsage_2:
+        id: e563b625-c4a1-4cd3-8596-2fbb2429a809
+        category: "@category_testimony"
+        text: "J'ai beaucoup apprécié les cours d'anglais chez English Coffee. Les professeurs sont très compétents et les cours sont très bien organisés. J'ai beaucoup appris et je me suis bien amusé. Je recommande vivement English Coffee."
+    testimony_3:
+        id: c31ce908-d67b-401f-a0be-75c73a81b8c4
+        category: "@category_testimony"
+        text: "Un café-restaurant convivial pour apprendre l'anglais ? Une expérience unique ! Conversations, jeux, enseignants sympas. Améliorez votre anglais de manière efficace et agréable."
+    testimony_4:
+        id: f2dbdfd7-d6fa-49aa-9ae6-1e499a7c777c
+        category: "@category_testimony"
+        text: "Une expérience d'apprentissage de l'anglais autour d'un café dans un environnement convivial ? Parfait ! Conversations détendues, jeux interactifs, enseignants sympathiques. Apprendre l'anglais n'a jamais été aussi plaisant et efficace."
+    testimony_5:
+        id: c1a4a4be-a332-466a-83ab-a7adea67eee7
+        category: "@category_testimony"
+        text: "Découvrir l'anglais dans un café convivial ? Génial ! Conversations animées, jeux interactifs, enseignants sympas. Apprendre l'anglais avec plaisir et efficacité, c'est possible !"
+    testimony_6:
+        id: 1b0b0b0b-1b0b-1b0b-1b0b-1b0b1b0b1b0b
+        category: "@category_testimony"
+        text: "Découvrir l'anglais dans un café convivial ? Génial ! 😃 Conversations animées, jeux interactifs, enseignants sympas. Apprendre l'anglais avec plaisir et efficacité, c'est possible ! 🌟"

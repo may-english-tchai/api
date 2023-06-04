@@ -89,5 +89,7 @@ docker-down: ## down the stack
 docker-sh: ## Connect to the docker container
 	$(DOCKER) exec -it api zsh
 
+docker-restart: docker-down docker-up docker-ps ## Reset the docker container
+
 deploy: git-rebase docker-down docker-build docker-up docker-ps docker-logs ## Deploy the application
 

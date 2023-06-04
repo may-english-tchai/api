@@ -21,6 +21,8 @@ class MessageCrudController extends AbstractCrudController
     {
         yield IdField::new('id')->hideOnForm();
         yield AssociationField::new('category');
+        yield AssociationField::new('fromUser');
+        yield AssociationField::new('toUser');
         yield TextField::new('subject');
         yield TextEditorField::new('text');
         yield Field::new('isEnabled');

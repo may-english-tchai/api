@@ -1,0 +1,16 @@
+App\Entity\Restaurant:
+    restaurant_le_moana:
+        name: LE MOANA
+        address: 1 bis, rue du commerce
+        city: Mamoudzou
+        postcode: 97600
+    restaurant_hippocampe:
+        name: hippocampe restaurant
+        address: 1rue impasse pompier
+        city: Mamoudzou
+        postcode: 97600
+    restaurant_senat:
+        name: La table du senat
+        address: 51B rue Mgombani
+        city: Mamoudzou
+        postcode: 97600
