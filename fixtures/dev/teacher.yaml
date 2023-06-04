@@ -1,0 +1,11 @@
+App\Entity\Teacher:
+    teacher_faiza:
+        email: faiza.mohamed.assani@gmail.com
+        languages: [ "@fr", "@en", "@ma" ]
+        name: Faiza
+        surname: Mohamed Hassani
+    teacher_samira:
+        email: samira@gmail.com
+        languages: [ "@fr", "@en", "@ma" ]
+        name: Samira
+        surname: Ahamada

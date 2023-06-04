@@ -1,0 +1,17 @@
+App\Entity\AvailabilityStatus:
+    status_available:
+        id: 1ac10d4c-7b52-47d9-b458-945bd87e00e7
+        code: available
+        label: Disponible
+    status_done:
+        id: bd4cfe8c-c21f-43a1-a0ca-a5186d1a327f
+        code: done
+        label: Terminé
+    status_cancelled:
+        id: db259216-50af-4865-8708-e0df4bd48f95
+        code: cancelled
+        label: Annulé
+    status_as_soon_as_possible:
+        id: c3511abb-c440-4e8a-86c9-dea71a31cccb
+        code: as_soon_as_possible
+        label: Dès que possible

@@ -48,7 +48,9 @@ final class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('My English Tchaï API');
+            ->setTitle('My English Tchaï API')
+            ->renderContentMaximized()
+        ;
     }
 
     public function configureMenuItems(): iterable
