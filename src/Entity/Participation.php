@@ -13,6 +13,7 @@ use App\Interface\SoftDeleteableInterface;
 use App\Interface\TimestampableInterface;
 use App\Repository\ParticipationRepository;
 use App\Trait\AmountEntityTrait;
+use App\Trait\CommentEntityTrait;
 use App\Trait\IdEntityTrait;
 use App\Trait\SoftDeleteableEntityTrait;
 use App\Trait\TimestampableEntityTrait;
@@ -39,6 +40,7 @@ class Participation implements TimestampableInterface, SoftDeleteableInterface
 {
     use IdEntityTrait;
     use AmountEntityTrait;
+    use CommentEntityTrait;
     use TimestampableEntityTrait;
     use SoftDeleteableEntityTrait;
 
@@ -52,6 +54,9 @@ class Participation implements TimestampableInterface, SoftDeleteableInterface
 
     #[ORM\OneToMany(mappedBy: 'participation', targetEntity: Payment::class, orphanRemoval: true)]
     private Collection $payments;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $note = null;
 
     public function __construct()
     {
@@ -117,6 +122,18 @@ class Participation implements TimestampableInterface, SoftDeleteableInterface
         }
 
         $payment->setParticipation(null);
+
+        return $this;
+    }
+
+    public function getNote(): ?int
+    {
+        return $this->note;
+    }
+
+    public function setNote(?int $note): self
+    {
+        $this->note = $note;
 
         return $this;
     }
