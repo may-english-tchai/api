@@ -54,7 +54,7 @@ test:
 
 ## —— Git ————————————————————————————————————————————————————————————————
 git-rebase:
-	git rebase origin/main
+	git pull --rebase origin main
 
 type ?= feat
 message ?= \#$(shell git branch --show-current | sed "s/-/ /g")

@@ -28,8 +28,13 @@ fi
 
 test -f env.local || touch .env.local
 
+make jwt-generate
 make doctrine-migrate
 
 chmod -R 777 ./
 
+# if app_env = dev load fixtures
+if [ "$APP_ENV" = "dev" ]; then
+	make doctrine-fixtures
+fi
 exec docker-php-entrypoint "$@"
