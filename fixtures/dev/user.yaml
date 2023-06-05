@@ -23,3 +23,21 @@ App\Entity\User:
         name: Faiza
         surname: Mohamed Hassani
         password: test
+    user_abdou:
+        email: abdou@gmail.com
+        roles: [ROLE_USER]
+        name: Abdou
+        surname: Mroivili
+        password: test
+    user_ahmed:
+        email: ahmed@gmail.com
+        roles: [ROLE_USER]
+        name: Ahmed
+        surname: Mroivili
+        password: test
+    user_ali:
+        email: ali.mohamed@gmail.com
+        roles: [ROLE_USER]
+        name: Ali
+        surname: Mohamed
+        password: test

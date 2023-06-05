@@ -1,0 +1,28 @@
+App\Entity\Participation:
+    participation_1:
+        availability: "@availability_1"
+        user: "@user_abdou"
+    participation_2:
+        availability: "@availability_4"
+        user: "@user_abdou"
+    participation_3:
+        availability: "@availability_6"
+        user: "@user_abdou"
+    participation_4:
+        availability: "@availability_6"
+        user: "@user_ahmed"
+    participation_5:
+        availability: "@availability_4"
+        user: "@user_ahmed"
+    participation_6:
+        availability: "@availability_1"
+        user: "@user_ahmed"
+    participation_7:
+        availability: "@availability_1"
+        user: "@user_ali"
+    participation_8:
+        availability: "@availability_2"
+        user: "@user_ali"
+    participation_9:
+        availability: "@availability_3"
+        user: "@user_ali"
