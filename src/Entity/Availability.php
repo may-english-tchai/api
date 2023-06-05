@@ -50,8 +50,8 @@ class Availability implements TimestampableInterface, SoftDeleteableInterface
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeInterface $start = null;
 
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    private ?\DateTimeInterface $end = null;
+    #[ORM\Column]
+    private ?int $duration = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
@@ -90,18 +90,6 @@ class Availability implements TimestampableInterface, SoftDeleteableInterface
     public function setStart(\DateTimeInterface $start): self
     {
         $this->start = $start;
-
-        return $this;
-    }
-
-    public function getEnd(): ?\DateTimeInterface
-    {
-        return $this->end;
-    }
-
-    public function setEnd(\DateTimeInterface $end): self
-    {
-        $this->end = $end;
 
         return $this;
     }
@@ -184,6 +172,18 @@ class Availability implements TimestampableInterface, SoftDeleteableInterface
         }
 
         $participation->setAvailability(null);
+
+        return $this;
+    }
+
+    public function getDuration(): ?int
+    {
+        return $this->duration;
+    }
+
+    public function setDuration(int $duration): self
+    {
+        $this->duration = $duration;
 
         return $this;
     }
