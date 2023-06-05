@@ -50,7 +50,7 @@ class Availability implements TimestampableInterface, SoftDeleteableInterface
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeInterface $start = null;
 
-    #[ORM\Column]
+    #[ORM\Column(options: ['default' => 60])]
     private ?int $duration = null;
 
     #[ORM\ManyToOne]
