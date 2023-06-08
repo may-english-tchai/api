@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Message;
+use App\Entity\Testimony;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
@@ -14,14 +14,13 @@ class TestimonyCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Message::class;
+        return Testimony::class;
     }
 
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
         yield AssociationField::new('fromUser');
-        yield AssociationField::new('toUser');
         yield TextField::new('subject');
         yield TextField::new('name');
         yield TextEditorField::new('content');
