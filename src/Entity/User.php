@@ -67,7 +67,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Timesta
 
     public function __toString(): string
     {
-        return (string) $this->getName();
+        return sprintf('%s %s', $this->getName(), $this->getSurname());
     }
 
     /**

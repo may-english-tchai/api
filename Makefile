@@ -17,13 +17,18 @@ composer-install:
 composer-update:
 	$(COMPOSER) update --with-all-dependencies
 
+database-drop:
+	$(CONSOLE) doctrine:schema:drop --force --full-database
+
 doctrine-migration:
 	$(CONSOLE) make:migration
 
-doctrine-migrate:
+doctrine-migrate: ## Apply doctrine migrate
 	$(CONSOLE) doctrine:migrations:up-to-date || $(CONSOLE) doctrine:migrations:migrate -n
 
-fixtures-load:
+doctrine-reset: database-drop doctrine-migrate
+
+fixtures-load: doctrine-reset ## Load fixtures
 	$(CONSOLE) hautelook:fixtures:load -n
 
 jwt-generate:

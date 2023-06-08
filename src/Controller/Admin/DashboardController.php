@@ -4,13 +4,14 @@ namespace App\Controller\Admin;
 
 use App\Entity\Availability;
 use App\Entity\AvailabilityStatus;
-use App\Entity\Category;
+use App\Entity\Contact;
 use App\Entity\Language;
 use App\Entity\Message;
 use App\Entity\Participation;
 use App\Entity\Payment;
 use App\Entity\Restaurant;
 use App\Entity\Teacher;
+use App\Entity\Testimony;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -67,8 +68,9 @@ final class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Teachers', 'fas fa-list', Teacher::class);
         yield MenuItem::linkToCrud('Restaurants', 'fas fa-list', Restaurant::class);
 
-        yield MenuItem::section('Messages');
+        yield MenuItem::section('Contents');
         yield MenuItem::linkToCrud('Message', 'fas fa-list', Message::class);
-        yield MenuItem::linkToCrud('Category', 'fas fa-list', Category::class);
+        yield MenuItem::linkToCrud('Testimony', 'fas fa-list', Testimony::class);
+        yield MenuItem::linkToCrud('Contact', 'fas fa-list', Contact::class);
     }
 }

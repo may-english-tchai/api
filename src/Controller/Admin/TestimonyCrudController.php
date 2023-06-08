@@ -10,7 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-class MessageCrudController extends AbstractCrudController
+class TestimonyCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
@@ -23,6 +23,7 @@ class MessageCrudController extends AbstractCrudController
         yield AssociationField::new('fromUser');
         yield AssociationField::new('toUser');
         yield TextField::new('subject');
+        yield TextField::new('name');
         yield TextEditorField::new('content');
         yield Field::new('isEnabled');
         yield Field::new('createdAt')->hideOnForm();

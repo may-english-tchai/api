@@ -1,7 +1,0 @@
-App\Entity\User:
-    user_admin:
-        email: mkl.devops@gmail.com
-        roles: [ROLE_SUPER_ADMIN]
-        name: Fahari
-        surname: Hamada Sidi
-        password: test

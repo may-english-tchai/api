@@ -22,9 +22,9 @@ trait CodeEntityTrait
         return $this->code;
     }
 
-    public function setCode(string $code): static
+    public function setCode(\BackedEnum|string $code): static
     {
-        $this->code = $code;
+        $this->code = is_string($code) ? $code : (string) $code->value;
 
         return $this;
     }
