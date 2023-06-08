@@ -19,11 +19,11 @@ final readonly class TestimonyEntityListener
     {
         $user = $this->security->getUser();
 
-        if ($user instanceof User && !$testimony->getFromUser() instanceof \App\Entity\User) {
+        if ($user instanceof User && !$testimony->getFromUser() instanceof User) {
             $testimony->setFromUser($user);
         }
 
-        if ($testimony->getFromUser() instanceof \App\Entity\User) {
+        if ($testimony->getFromUser() instanceof User) {
             $testimony->setName((string) $testimony->getFromUser()->getName());
         }
     }
