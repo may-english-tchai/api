@@ -1,3 +1,8 @@
+when@prod:
+    hautelook_alice:
+        fixtures_path:
+            - fixtures/default
+
 when@dev:
     hautelook_alice:
         fixtures_path:
@@ -8,4 +13,5 @@ when@test:
     hautelook_alice:
         fixtures_path:
             - fixtures/default
+            - fixtures/dev
             - fixtures/test
