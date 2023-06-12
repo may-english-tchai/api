@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
@@ -28,13 +30,13 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     operations: [
         new Get(security: 'is_granted("PUBLIC_ACCESS")'),
         new GetCollection(security: 'is_granted("PUBLIC_ACCESS")'),
-        new Put(security: 'is_granted("ROLE_USER")'),
-        new Post(),
-        new Patch(),
-        new Delete(),
-    ],
-    security: 'is_granted("ROLE_ADMIN")'
+        new Put(security: 'is_granted("ROLE_TEACHER")'),
+        new Post(security: 'is_granted("ROLE_TEACHER")'),
+        new Patch(security: 'is_granted("ROLE_TEACHER")'),
+        new Delete(security: 'is_granted("ROLE_TEACHER")'),
+    ]
 )]
+#[ApiFilter(SearchFilter::class, properties: ['isEnabled' => 'exact'])]
 #[UniqueEntity(fields: ['start', 'teacher'])]
 #[ORM\UniqueConstraint(fields: ['start', 'teacher'])]
 #[ORM\Entity(repositoryClass: AvailabilityRepository::class)]
