@@ -22,4 +22,4 @@ jobs:
       - name: Analyzes
         run: make analyze
       - name: Run tests
-        run: make test
+        run: make jwt-generate test
