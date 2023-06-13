@@ -43,13 +43,13 @@ lint:
 	$(CONSOLE) doctrine:schema:validate --skip-sync -q
 
 stan:
-	./vendor/bin/phpstan analyse -q
+	@./vendor/bin/phpstan analyse -q
 
 cs-fix:
-	./vendor/bin/php-cs-fixer fix -q
+	@./vendor/bin/php-cs-fixer fix -q
 
 rector:
-	./vendor/bin/rector
+	@./vendor/bin/rector --no-progress-bar
 
 analyze: lint stan cs-fix rector
 
