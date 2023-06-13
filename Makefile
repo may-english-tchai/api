@@ -57,7 +57,7 @@ analyze: lint stan cs-fix rector
 test:
 	$(CONSOLE) doctrine:schema:drop --force --env=test -q
 	$(CONSOLE) doctrine:schema:create --env=test -q
-	APP_ENV=test $(CONSOLE) hautelook:fixtures:load -n -q
+	$(CONSOLE) hautelook:fixtures:load -n -q --env=test
 	APP_ENV=test ./vendor/bin/phpunit
 
 ## —— Git ————————————————————————————————————————————————————————————————
