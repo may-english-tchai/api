@@ -37,16 +37,16 @@ jwt-generate:
 	$(CONSOLE) lexik:jwt:generate-keypair --skip-if-exists
 
 lint:
-	$(CONSOLE) lint:container
-	$(CONSOLE) lint:yaml --parse-tags config/
-	$(CONSOLE) lint:twig templates/
-	$(CONSOLE) doctrine:schema:validate --skip-sync
+	$(CONSOLE) lint:container -q
+	$(CONSOLE) lint:yaml --parse-tags config/ -q
+	$(CONSOLE) lint:twig templates/ -q
+	$(CONSOLE) doctrine:schema:validate --skip-sync -q
 
 stan:
-	./vendor/bin/phpstan analyse
+	./vendor/bin/phpstan analyse -q
 
 cs-fix:
-	./vendor/bin/php-cs-fixer fix
+	./vendor/bin/php-cs-fixer fix -q
 
 rector:
 	./vendor/bin/rector
@@ -62,7 +62,7 @@ test:
 ## —— Git ————————————————————————————————————————————————————————————————
 git-rebase:
 	git pull --rebase
-	git pull --rebase origin main
+	git pull --rebase origin main!
 
 type ?= feat
 message ?= \#$(shell git branch --show-current | sed "s/-/ /g")
