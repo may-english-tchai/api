@@ -14,4 +14,4 @@ jobs:
             - name: Pull images
               run: docker compose pull
             - name: Start services
-              run: docker compose up --build -d
+              run: docker compose version
