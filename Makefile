@@ -25,7 +25,7 @@ doctrine-migration:
 	$(CONSOLE) make:migration
 
 doctrine-migrate: ## Apply doctrine migrate
-	$(CONSOLE) doctrine:migrations:up-to-date || $(CONSOLE) doctrine:migrations:migrate -n
+	$(CONSOLE) doctrine:migrations:migrate -n
 
 doctrine-reset: database-drop doctrine-migrate
 doctrine-apply-migration: doctrine-reset doctrine-migration doctrine-reset  ## Generate doctrine migration

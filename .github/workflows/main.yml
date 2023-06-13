@@ -2,6 +2,7 @@
 name: CI/CD workflow
 on:
   push:
+
 jobs:
   analyze:
     runs-on: ubuntu-latest
