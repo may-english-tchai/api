@@ -24,3 +24,5 @@ jobs:
         run: make analyze
       - name: Run tests
         run: make jwt-generate test
+      - name: Run infection
+        run: make infection
