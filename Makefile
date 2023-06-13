@@ -71,7 +71,7 @@ git-auto-commit:
 
 GIT_CURRENT_BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
 git-push:
-	git push origin "$(GIT_CURRENT_BRANCH)"
+	git push origin "$(GIT_CURRENT_BRANCH)" --force-with-lease
 
 commit: analyze git-auto-commit git-rebase git-push
 
