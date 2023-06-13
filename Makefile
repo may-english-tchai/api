@@ -1,6 +1,6 @@
 DOCKER=docker compose
 COMPOSER=symfony composer
-CONSOLE=symfony console
+CONSOLE=php bin/console
 
 .DEFAULT_GOAL := docker-sh
 
