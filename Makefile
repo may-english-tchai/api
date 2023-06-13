@@ -44,13 +44,16 @@ lint:
 	$(CONSOLE) doctrine:schema:validate --skip-sync -q
 
 stan:
-	@./vendor/bin/phpstan analyse -q
+	@./vendor/bin/phpstan analyse $q
 
 cs-fix:
 	@./vendor/bin/php-cs-fixer fix -q
 
 rector:
 	@./vendor/bin/rector --no-progress-bar
+
+infection: ## Run infection tests
+	@./vendor/bin/infection --min-msi=100 --min-covered-msi=100 --threads=4 --only-covered --show-mutations --log-verbosity=none
 
 analyze: lint stan cs-fix rector
 
@@ -75,6 +78,7 @@ GIT_CURRENT_BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
 git-push:
 	$(GIT) push origin "$(GIT_CURRENT_BRANCH)" --force-with-lease
 
+commit: q=-q
 commit: analyze git-auto-commit git-rebase git-push
 
 ## —— Docker ————————————————————————————————————————————————————————————————

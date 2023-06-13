@@ -16,8 +16,12 @@ final readonly class UserEntityListener
 
     public function prePersist(User $user): void
     {
+        if (null === $user->getPassword()) {
+            return;
+        }
+
         if ($this->passwordHasher->needsRehash($user)) {
-            $user->setPassword($this->passwordHasher->hashPassword($user, (string) $user->getPassword()));
+            $user->setPassword($this->passwordHasher->hashPassword($user, $user->getPassword()));
         }
     }
 }
