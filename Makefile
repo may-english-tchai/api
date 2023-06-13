@@ -1,6 +1,7 @@
 DOCKER=docker compose
 COMPOSER=symfony composer
 CONSOLE=@php bin/console
+GIT=@git
 
 .DEFAULT_GOAL := docker-sh
 
@@ -61,18 +62,18 @@ test:
 
 ## —— Git ————————————————————————————————————————————————————————————————
 git-rebase:
-	git pull --rebase -q
-	git pull --rebase origin main -q
+	$(GIT) pull --rebase -q
+	$(GIT) pull --rebase origin main -q
 
 type ?= feat
 message ?= \#$(shell git branch --show-current | sed "s/-/ /g")
 git-auto-commit:
-	git add .
-	@git commit -m "${type}: ${message}" || true
+	$(GIT) add .
+	$(GIT) commit -m "${type}: ${message}" || true
 
 GIT_CURRENT_BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
 git-push:
-	git push origin "$(GIT_CURRENT_BRANCH)" --force-with-lease
+	$(GIT) push origin "$(GIT_CURRENT_BRANCH)" --force-with-lease
 
 commit: analyze git-auto-commit git-rebase git-push
 
