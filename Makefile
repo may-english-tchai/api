@@ -9,7 +9,7 @@ help: ## Outputs this help screen
 	@grep -E '(^[a-zA-Z0-9_-]+:.*?## .*$$)|(^## )' Makefile | awk 'BEGIN {FS = ":.*?## "}{printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
 sf-cc:
-	chmod -R 777 ./
+	@chmod -R 777 ./
 	$(CONSOLE) c:c
 
 composer-install:
@@ -28,8 +28,7 @@ doctrine-migrate: ## Apply doctrine migrate
 	$(CONSOLE) doctrine:migrations:migrate -n
 
 doctrine-reset: database-drop doctrine-migrate
-doctrine-apply-migration: doctrine-reset doctrine-migration doctrine-reset  ## Generate doctrine migration
-
+doctrine-apply-migration: doctrine-reset doctrine-migration doctrine-reset  ## Apply doctrine migrate and reset database
 
 fixtures-load: doctrine-reset ## Load fixtures
 	$(CONSOLE) hautelook:fixtures:load -n
@@ -38,32 +37,35 @@ jwt-generate:
 	$(CONSOLE) lexik:jwt:generate-keypair --skip-if-exists
 
 lint:
-	$(CONSOLE) lint:container -q
-	$(CONSOLE) lint:yaml --parse-tags config/ -q
-	$(CONSOLE) lint:twig templates/ -q
-	$(CONSOLE) doctrine:schema:validate --skip-sync -q
+	$(CONSOLE) lint:container $q
+	$(CONSOLE) lint:yaml --parse-tags config/ $q
+	$(CONSOLE) lint:twig templates/ $q
+	$(CONSOLE) doctrine:schema:validate --skip-sync $q
 
 stan:
-	@./vendor/bin/phpstan analyse -q
+	@./vendor/bin/phpstan analyse $q
 
 cs-fix:
-	@./vendor/bin/php-cs-fixer fix -q
+	@./vendor/bin/php-cs-fixer fix $q
 
 rector:
 	@./vendor/bin/rector --no-progress-bar
 
+infection: ## Run infection tests
+	@./vendor/bin/infection --min-msi=100 --min-covered-msi=100 --threads=4 --only-covered --show-mutations --log-verbosity=none
+
 analyze: lint stan cs-fix rector
 
 test:
-	$(CONSOLE) doctrine:schema:drop --force --env=test -q
-	$(CONSOLE) doctrine:schema:create --env=test -q
-	$(CONSOLE) hautelook:fixtures:load -n -q --env=test
+	$(CONSOLE) doctrine:schema:drop --force --env=test $q
+	$(CONSOLE) doctrine:schema:create --env=test $q
+	$(CONSOLE) hautelook:fixtures:load -n $q --env=test
 	APP_ENV=test ./vendor/bin/phpunit
 
 ## —— Git ————————————————————————————————————————————————————————————————
 git-rebase:
-	$(GIT) pull --rebase -q
-	$(GIT) pull --rebase origin main -q
+	$(GIT) pull --rebase $q
+	$(GIT) pull --rebase origin main $q
 
 type ?= feat
 message ?= \#$(shell git branch --show-current | sed "s/-/ /g")
@@ -75,6 +77,7 @@ GIT_CURRENT_BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
 git-push:
 	$(GIT) push origin "$(GIT_CURRENT_BRANCH)" --force-with-lease
 
+commit: q=-q
 commit: analyze git-auto-commit git-rebase git-push
 
 ## —— Docker ————————————————————————————————————————————————————————————————
