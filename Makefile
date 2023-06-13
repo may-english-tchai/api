@@ -54,15 +54,15 @@ rector:
 analyze: lint stan cs-fix rector
 
 test:
-	$(CONSOLE) doctrine:schema:drop --force --env=test
-	$(CONSOLE) doctrine:schema:create --env=test
-	APP_ENV=test $(CONSOLE) hautelook:fixtures:load -n
+	$(CONSOLE) doctrine:schema:drop --force --env=test -q
+	$(CONSOLE) doctrine:schema:create --env=test -q
+	APP_ENV=test $(CONSOLE) hautelook:fixtures:load -n -q
 	APP_ENV=test ./vendor/bin/phpunit
 
 ## —— Git ————————————————————————————————————————————————————————————————
 git-rebase:
-	git pull --rebase
-	git pull --rebase origin main
+	git pull --rebase -q
+	git pull --rebase origin main -q
 
 type ?= feat
 message ?= \#$(shell git branch --show-current | sed "s/-/ /g")
