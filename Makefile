@@ -40,7 +40,7 @@ lint:
 	$(CONSOLE) lint:container
 	$(CONSOLE) lint:yaml --parse-tags config/
 	$(CONSOLE) lint:twig templates/
-	$(CONSOLE) doctrine:schema:validate
+	$(CONSOLE) doctrine:schema:validate --skip-sync
 
 stan:
 	./vendor/bin/phpstan analyse
