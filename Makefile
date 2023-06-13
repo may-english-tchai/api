@@ -61,6 +61,7 @@ test:
 
 ## —— Git ————————————————————————————————————————————————————————————————
 git-rebase:
+	git pull --rebase
 	git pull --rebase origin main
 
 type ?= feat
