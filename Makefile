@@ -27,6 +27,8 @@ doctrine-migrate: ## Apply doctrine migrate
 	$(CONSOLE) doctrine:migrations:up-to-date || $(CONSOLE) doctrine:migrations:migrate -n
 
 doctrine-reset: database-drop doctrine-migrate
+doctrine-apply-migration: doctrine-reset doctrine-migration doctrine-reset  ## Generate doctrine migration
+
 
 fixtures-load: doctrine-reset ## Load fixtures
 	$(CONSOLE) hautelook:fixtures:load -n
