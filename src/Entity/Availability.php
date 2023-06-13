@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
@@ -37,6 +39,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     ]
 )]
 #[ApiFilter(SearchFilter::class, properties: ['isEnabled' => 'exact'])]
+#[ApiFilter(DateFilter::class, properties: ['start'])]
+#[ApiFilter(OrderFilter::class, properties: ['start'])]
 #[UniqueEntity(fields: ['start', 'teacher'])]
 #[ORM\UniqueConstraint(fields: ['start', 'teacher'])]
 #[ORM\Entity(repositoryClass: AvailabilityRepository::class)]
@@ -73,6 +77,9 @@ class Availability implements TimestampableInterface, SoftDeleteableInterface
 
     #[ORM\OneToMany(mappedBy: 'availability', targetEntity: Participation::class, orphanRemoval: true)]
     private Collection $participations;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $capacity = null;
 
     public function __construct()
     {
@@ -186,6 +193,18 @@ class Availability implements TimestampableInterface, SoftDeleteableInterface
     public function setDuration(int $duration): self
     {
         $this->duration = $duration;
+
+        return $this;
+    }
+
+    public function getCapacity(): ?int
+    {
+        return $this->capacity;
+    }
+
+    public function setCapacity(?int $capacity): self
+    {
+        $this->capacity = $capacity;
 
         return $this;
     }

@@ -4,50 +4,56 @@ App\Entity\Availability:
         restaurant: "@restaurant_le_moana"
         start: <(new DateTimeImmutable('+3days 15:00'))>
         duration: 60
-        price: 30
+        price: 29.99
         language: "@language_fr"
         status: "@status_available"
+        capacity: 2
     availability_2:
         teacher: "@teacher_faiza"
         restaurant: "@restaurant_le_moana"
         start: <(new DateTimeImmutable('+4days 14:00'))>
         duration: 60
-        price: 20
+        price: 19.90
         language: "@language_en"
         status: "@status_available"
+        capacity: 4
     availability_3:
         teacher: "@teacher_samira"
         restaurant: "@restaurant_senat"
         start: <(new DateTimeImmutable('+4days 16:00'))>
         duration: 90
-        price: 20
+        price: 20.00
         language: "@language_ma"
         status: "@status_available"
         comment: "Je suis disponible pour vous aider à apprendre le mahorais"
+        capacity: 4
     availability_4:
         teacher: "@teacher_samira"
         restaurant: "@restaurant_senat"
         start: <(new DateTimeImmutable('+5days 18:00'))>
         duration: 90
-        price: 20
+        price: 15.00
         language: "@language_en"
         status: "@status_available"
         comment: "I am available to help you learn English"
+        capacity: 5
     availability_5:
         teacher: "@teacher_samira"
         restaurant: "@restaurant_hippocampe"
         start: <(new DateTimeImmutable('+6days 18:00'))>
         duration: 90
-        price: 20
+        price: 20.00
         language: "@language_fr"
         status: "@status_available"
         comment: "Je suis disponible pour vous aider à apprendre le français"
+        capacity: 4
     availability_6:
         teacher: "@teacher_samira"
         restaurant: "@restaurant_hippocampe"
         start: <(new DateTimeImmutable('+6days 15:00'))>
         duration: 60
-        price: 20
+        price: 20.00
         language: "@language_ma"
         status: "@status_available"
         comment: "Je suis disponible pour vous aider à apprendre le mahorais"
+        capacity: 5

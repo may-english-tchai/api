@@ -20,10 +20,6 @@ jobs:
         run: |
           echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
       - name: Analyzes
-        run:  |
-          APP_ENV=test php bin/console doctrine:schema:create
-          make analyze
+        run: make analyze
       - name: Run tests
-        run:  |
-          APP_ENV=test php bin/console doctrine:schema:create
-          ./vendor/bin/phpunit
+        run: make test

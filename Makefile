@@ -1,6 +1,7 @@
 DOCKER=docker compose
 COMPOSER=symfony composer
-CONSOLE=symfony console
+CONSOLE=@php bin/console
+GIT=@git
 
 .DEFAULT_GOAL := docker-sh
 
@@ -27,6 +28,8 @@ doctrine-migrate: ## Apply doctrine migrate
 	$(CONSOLE) doctrine:migrations:up-to-date || $(CONSOLE) doctrine:migrations:migrate -n
 
 doctrine-reset: database-drop doctrine-migrate
+doctrine-apply-migration: doctrine-reset doctrine-migration doctrine-reset  ## Generate doctrine migration
+
 
 fixtures-load: doctrine-reset ## Load fixtures
 	$(CONSOLE) hautelook:fixtures:load -n
@@ -35,41 +38,42 @@ jwt-generate:
 	$(CONSOLE) lexik:jwt:generate-keypair --skip-if-exists
 
 lint:
-	$(CONSOLE) lint:container
-	$(CONSOLE) lint:yaml --parse-tags config/
-	$(CONSOLE) lint:twig templates/
-	$(CONSOLE) doctrine:schema:validate
+	$(CONSOLE) lint:container -q
+	$(CONSOLE) lint:yaml --parse-tags config/ -q
+	$(CONSOLE) lint:twig templates/ -q
+	$(CONSOLE) doctrine:schema:validate --skip-sync -q
 
 stan:
-	./vendor/bin/phpstan analyse
+	@./vendor/bin/phpstan analyse -q
 
 cs-fix:
-	./vendor/bin/php-cs-fixer fix
+	@./vendor/bin/php-cs-fixer fix -q
 
 rector:
-	./vendor/bin/rector
+	@./vendor/bin/rector --no-progress-bar
 
 analyze: lint stan cs-fix rector
 
 test:
-	$(CONSOLE) doctrine:schema:drop --force --env=test
-	$(CONSOLE) doctrine:schema:create --env=test
-	APP_ENV=test $(CONSOLE) hautelook:fixtures:load -n
+	$(CONSOLE) doctrine:schema:drop --force --env=test -q
+	$(CONSOLE) doctrine:schema:create --env=test -q
+	APP_ENV=test $(CONSOLE) hautelook:fixtures:load -n -q
 	APP_ENV=test ./vendor/bin/phpunit
 
 ## —— Git ————————————————————————————————————————————————————————————————
 git-rebase:
-	git pull --rebase origin main
+	$(GIT) pull --rebase -q
+	$(GIT) pull --rebase origin main -q
 
 type ?= feat
 message ?= \#$(shell git branch --show-current | sed "s/-/ /g")
 git-auto-commit:
-	git add .
-	@git commit -m "${type}: ${message}" || true
+	$(GIT) add .
+	$(GIT) commit -m "${type}: ${message}" -q || true
 
 GIT_CURRENT_BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
 git-push:
-	git push origin "$(GIT_CURRENT_BRANCH)"
+	$(GIT) push origin "$(GIT_CURRENT_BRANCH)" --force-with-lease
 
 commit: analyze git-auto-commit git-rebase git-push
 
