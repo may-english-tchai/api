@@ -86,10 +86,10 @@ git-auto-commit:
 
 current_branch=$(shell git rev-parse --abbrev-ref HEAD)
 git-push:
-	$(GIT) push origin "$(GIT_CURRENT_BRANCH)" --force-with-lease --force-if-includes
+	$(GIT) push origin "$(current_branch)" --force-with-lease --force-if-includes
 
-commit: q=-q
-commit: git-clean-branches analyze git-auto-commit git-rebase git-push ## Commit and push the current branch
+#commit: q=-q
+commit: analyze git-auto-commit git-rebase git-push ## Commit and push the current branch
 
 ## —— Docker ————————————————————————————————————————————————————————————————
 docker-install: Dockerfile docker-compose.yaml docker-down docker-build docker-up docker-ps docker-logs ## Reset and install your environment
