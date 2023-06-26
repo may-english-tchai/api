@@ -7,7 +7,9 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
 use App\Repository\MessageRepository;
 use App\Trait\EmailEntityTrait;
+use App\Trait\NameEntityTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
@@ -18,17 +20,19 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
 class Contact extends Content
 {
+    use NameEntityTrait;
     use EmailEntityTrait;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(min: 10)]
+    #[ORM\Column(type: 'string', length: 20, nullable: true)]
     private ?string $phone = null;
 
-    public function getphone(): ?string
+    public function getPhone(): ?string
     {
         return $this->phone;
     }
 
-    public function setphone(?string $phone): void
+    public function setPhone(?string $phone): void
     {
         $this->phone = $phone;
     }

@@ -1,13 +1,16 @@
 App\Entity\Contact:
         contact_1:
             id: ce1ddb18-4c0a-4129-bcc9-060cda584988
+            name: "John Doe"
             email: <email()>
             content: "Apprendre l'anglais dans une ambiance conviviale de café-restaurant ? Une expérience incroyable ! Conversations animées, jeux interactifs, enseignants sympathiques. Un moyen efficace et agréable d'améliorer ses compétences en anglais."
         contact_2:
+            name: "Ali Mohamed"
             id: e3415ac8-03a6-49ba-b7d6-0f787eceb3c3
             email: ali.mohamed@gmail.com
             content: "J'ai beaucoup apprécié les cours d'anglais chez English Coffee. Les professeurs sont très compétents et les cours sont très bien organisés. J'ai beaucoup appris et je me suis bien amusé. Je recommande vivement English Coffee."
         contact_3:
+            name: "Sara Ben Ali"
             id: db100fa1-11eb-424f-b43b-803d9d3c973c
             email: <email()>
             content: <text()>

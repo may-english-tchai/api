@@ -4,10 +4,9 @@ namespace App\Processor;
 
 use App\Exception\EntityValidationException;
 use App\Interface\EntityInterface;
-// use Fidry\AliceDataFixtures\ProcessorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-final readonly class EntityValidationProcessor // implements ProcessorInterface
+final readonly class EntityValidationProcessor
 {
     public function __construct(
         private readonly ValidatorInterface $validator,

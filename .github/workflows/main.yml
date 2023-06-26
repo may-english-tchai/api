@@ -21,8 +21,4 @@ jobs:
         run: |
           echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
       - name: Analyzes
-        run: make analyze
-      - name: Run tests
-        run: make jwt-generate test
-      - name: Run infection
-        run: make infection
+        run: make jwt-generate analyze

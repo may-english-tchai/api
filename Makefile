@@ -54,7 +54,7 @@ rector:
 infection: ## Run infection tests
 	@./vendor/bin/infection --min-msi=100 --min-covered-msi=100 --threads=4 --only-covered --show-mutations --log-verbosity=none
 
-analyze: lint stan cs-fix rector
+analyze: lint stan cs-fix rector test infection
 
 test:
 	$(CONSOLE) doctrine:schema:drop --force --env=test $q
