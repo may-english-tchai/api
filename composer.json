@@ -22,6 +22,7 @@
         "sentry/sentry": "^3.19",
         "sentry/sentry-symfony": "^4.8",
         "stof/doctrine-extensions-bundle": "^1.7",
+        "stripe/stripe-php": "^10.15",
         "symfony/asset": "6.3.*",
         "symfony/console": "6.3.*",
         "symfony/doctrine-messenger": "6.3.*",
