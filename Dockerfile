@@ -8,7 +8,8 @@ WORKDIR /srv/app
 
 COPY --from=php_extension_installer --link /usr/bin/install-php-extensions /usr/local/bin/
 
-RUN apk add --no-cache $PHPIZE_DEPS git build-base zsh shadow
+RUN apk add --no-cache $PHPIZE_DEPS git
+RUN apk add --no-cache build-base zsh shadow
 
 RUN set -eux; \
     install-php-extensions intl zip apcu opcache
