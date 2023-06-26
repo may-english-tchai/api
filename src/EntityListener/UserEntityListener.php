@@ -20,7 +20,9 @@ final readonly class UserEntityListener
             return;
         }
 
+        dump((string) $user, $user->getPassword());
         if ($this->passwordHasher->needsRehash($user)) {
+            dump('rehash');
             $user->setPassword($this->passwordHasher->hashPassword($user, $user->getPassword()));
         }
     }

@@ -41,3 +41,9 @@ App\Entity\User:
         name: Ali
         surname: Mohamed
         password: test
+    user_amine:
+        email: amine.khaoui@outlook.fr
+        roles: [ROLE_USER]
+        name: Amine
+        surname: Khaoui
+        password: \$2y\$13\$/9m29DFamoWkdG6vSuVq5Oi1oID08oXFPSLvCdV2SzSQvS73CV/O2
