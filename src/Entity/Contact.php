@@ -9,6 +9,7 @@ use App\Repository\MessageRepository;
 use App\Trait\EmailEntityTrait;
 use App\Trait\NameEntityTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -22,6 +23,13 @@ class Contact extends Content
 {
     use NameEntityTrait;
     use EmailEntityTrait;
+
+    #[Groups(['email', 'email:write'])]
+    #[Assert\Email]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
+    #[ORM\Column(unique: false)]
+    protected ?string $email = null;
 
     #[Assert\Length(min: 10)]
     #[ORM\Column(type: 'string', length: 20, nullable: true)]
