@@ -27,6 +27,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use App\Validators\Constraints\MaxCapacity;
 
 #[ApiResource(
     operations: [
@@ -44,6 +45,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[UniqueEntity(fields: ['start', 'teacher'])]
 #[ORM\UniqueConstraint(fields: ['start', 'teacher'])]
 #[ORM\Entity(repositoryClass: AvailabilityRepository::class)]
+#[MaxCapacity]
 class Availability implements TimestampableInterface, SoftDeleteableInterface
 {
     use IdEntityTrait;
