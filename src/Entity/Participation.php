@@ -21,6 +21,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
@@ -48,6 +49,7 @@ class Participation implements TimestampableInterface, SoftDeleteableInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    #[Assert\Valid]
     #[ORM\ManyToOne(inversedBy: 'participations')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Availability $availability = null;

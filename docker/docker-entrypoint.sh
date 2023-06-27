@@ -22,19 +22,19 @@ if [ ! -f composer.json ]; then
     cd -
 
     rm -Rf tmp/
-else
-	make composer-install
+#else
+	#make composer-install
 fi
 
 test -f env.local || touch .env.local
 
-make jwt-generate
-make doctrine-migrate
+#make jwt-generate
+#make doctrine-migrate
 
 chmod -R 777 ./
 
 # if app_env = dev load fixtures
-if [ "$APP_ENV" = "dev" ]; then
-	make doctrine-fixtures
-fi
+#if [ "$APP_ENV" = "dev" ]; then
+#	make doctrine-fixtures
+#fi
 exec docker-php-entrypoint "$@"
