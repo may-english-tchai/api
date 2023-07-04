@@ -13,8 +13,7 @@ GIT=@git
 .DEFAULT_GOAL := docker-sh
 
 help: ## Outputs this help screen
-	echo "isContainerRunning: $(isContainerRunning)"
-	#@grep -E '(^[a-zA-Z0-9_-]+:.*?## .*$$)|(^## )' Makefile | awk 'BEGIN {FS = ":.*?## "}{printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
+	@grep -E '(^[a-zA-Z0-9_-]+:.*?## .*$$)|(^## )' Makefile | awk 'BEGIN {FS = ":.*?## "}{printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
 sf-cc:
 	@chmod -R 777 ./
@@ -35,10 +34,13 @@ doctrine-migration:
 doctrine-migrate: ## Apply doctrine migrate
 	$(CONSOLE) doctrine:migrations:migrate -n
 
+doctrine-schema-create:
+	$(CONSOLE) doctrine:schema:create
+
 doctrine-reset: database-drop doctrine-migrate
 doctrine-apply-migration: doctrine-reset doctrine-migration doctrine-reset  ## Apply doctrine migrate and reset database
 
-fixtures-load: doctrine-reset ## Load fixtures
+fixtures-load: #doctrine-reset ## Load fixtures
 	$(CONSOLE) hautelook:fixtures:load -n
 
 jwt-generate:
