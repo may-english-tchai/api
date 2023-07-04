@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Controller\Participation\ParticipationCheckoutController;
 use App\Interface\SoftDeleteableInterface;
 use App\Interface\TimestampableInterface;
 use App\Repository\ParticipationRepository;
@@ -28,7 +29,11 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(security: 'is_granted("PUBLIC_ACCESS")'),
         new GetCollection(security: 'is_granted("PUBLIC_ACCESS")'),
         new Put(),
-        new Post(),
+        new Post(
+            uriTemplate: '/participations/checkout/{id}',
+            controller: ParticipationCheckoutController::class,
+            name: 'checkout',
+        ),
         new Patch(),
         new Delete(),
     ],
@@ -45,24 +50,23 @@ class Participation implements TimestampableInterface, SoftDeleteableInterface
     use TimestampableEntityTrait;
     use SoftDeleteableEntityTrait;
 
-    #[ORM\ManyToOne(inversedBy: 'participations')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
-
-    #[Assert\Valid]
-    #[ORM\ManyToOne(inversedBy: 'participations')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Availability $availability = null;
-
-    #[ORM\OneToMany(mappedBy: 'participation', targetEntity: Payment::class, orphanRemoval: true)]
-    private Collection $payments;
-
     #[ORM\Column(nullable: true)]
     private ?int $note = null;
 
-    public function __construct()
-    {
-        $this->payments = new ArrayCollection();
+    public function __construct(
+        #[ORM\ManyToOne(inversedBy: 'participations')]
+        #[ORM\JoinColumn(nullable: false)]
+        private ?User $user = null,
+
+        #[Assert\Valid]
+        #[ORM\ManyToOne(inversedBy: 'participations')]
+        #[ORM\JoinColumn(nullable: false)]
+        private ?Availability $availability = null,
+
+        #[ORM\OneToMany(mappedBy: 'participation', targetEntity: Payment::class, orphanRemoval: true)]
+        private Collection $payments = new ArrayCollection(),
+    ) {
+        $this->amount = $availability?->getPrice() ?? 0;
     }
 
     public function __toString(): string

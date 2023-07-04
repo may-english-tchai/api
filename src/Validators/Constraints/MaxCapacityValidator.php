@@ -18,15 +18,18 @@ class MaxCapacityValidator extends ConstraintValidator
         if (!$value instanceof Availability) {
             return;
         }
+
         // Mettez ici la logique de validation pour vérifier si la capacité maximale est dépassée
         // $value représente l'objet ou la valeur à valider
         // Exemple :
         if (null === $value->getCapacity()) {
             return;
         }
+
         if (count($value->getParticipations()) < $value->getCapacity()) {
             return;
         }
+
         $this->context->buildViolation($constraint->message)
             ->addViolation();
     }
