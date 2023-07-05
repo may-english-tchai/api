@@ -7,9 +7,7 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
-use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
-use App\Controller\Participation\ParticipationCheckoutController;
 use App\Interface\SoftDeleteableInterface;
 use App\Interface\TimestampableInterface;
 use App\Repository\ParticipationRepository;
@@ -29,11 +27,6 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(security: 'is_granted("PUBLIC_ACCESS")'),
         new GetCollection(security: 'is_granted("PUBLIC_ACCESS")'),
         new Put(),
-        new Post(
-            uriTemplate: '/participations/checkout/{id}',
-            controller: ParticipationCheckoutController::class,
-            name: 'checkout',
-        ),
         new Patch(),
         new Delete(),
     ],
