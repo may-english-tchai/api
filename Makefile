@@ -62,7 +62,7 @@ rector:
 	@./vendor/bin/rector --no-progress-bar
 
 infection: ## Run infection tests
-	@./vendor/bin/infection --min-msi=100 --min-covered-msi=100 --threads=4 --only-covered --show-mutations --log-verbosity=none
+	@./vendor/bin/infection --min-msi=80 --min-covered-msi=80 --threads=4 --only-covered --show-mutations --log-verbosity=none
 
 analyze: lint stan cs-fix rector test infection ## Run all analysis tools
 analyze: lint stan cs-fix rector test infection

@@ -1,5 +1,6 @@
 App\Entity\Availability:
     availability_1:
+        id: 43b9bee6-8b59-4c64-9113-80bf4a7356c0
         teacher: "@teacher_faiza"
         restaurant: "@restaurant_le_moana"
         start: <(new DateTimeImmutable('+3days 15:00'))>
