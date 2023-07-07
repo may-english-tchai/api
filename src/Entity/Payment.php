@@ -112,6 +112,9 @@ class Payment implements TimestampableInterface, SoftDeleteableInterface
         return $this->data;
     }
 
+    /**
+     * @throws \JsonException
+     */
     public function getDataToJson(): false|string
     {
         return json_encode($this->data, JSON_THROW_ON_ERROR);
