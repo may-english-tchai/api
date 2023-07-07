@@ -90,7 +90,12 @@ class Availability implements TimestampableInterface, SoftDeleteableInterface
 
     public function __toString(): string
     {
-        return sprintf('%s - %s', $this->getStart()?->format('Y-m-d H:i'), $this->getTeacher());
+        return sprintf(
+            '%s - %s - %s',
+            $this->getStart()?->format('d/m/y H:i'),
+            $this->getTeacher(),
+            $this->getRestaurant(),
+        );
     }
 
     public function getStart(): ?\DateTimeInterface

@@ -1,5 +1,6 @@
 App\Entity\Participation:
     participation_1:
+        id: 9aed42c1-be58-4610-92f5-f8789e35293c
         availability: "@availability_1"
         user: "@user_abdou"
     participation_2:

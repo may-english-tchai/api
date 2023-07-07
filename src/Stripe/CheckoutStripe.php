@@ -7,6 +7,7 @@ use App\Entity\Availability;
 use App\Entity\Participation;
 use App\Entity\Payment;
 use App\Entity\User;
+use App\Enum\PaymentStatusEnum;
 use App\Repository\ParticipationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\Checkout\Session;
@@ -39,6 +40,10 @@ final readonly class CheckoutStripe
                     'unit_amount_decimal' => $participation->getAmount() * 100,
                     'product_data' => [
                         'name' => (string) $availability,
+                        'metadata' => [
+                            'availability_id' => $availability->getId(),
+                            'participation_id' => $participation->getId(),
+                        ],
                     ],
                 ],
                 'quantity' => 1,
@@ -62,27 +67,33 @@ final readonly class CheckoutStripe
             'user' => $user,
             'availability' => $availability,
         ]);
+
         if (!$participation instanceof Participation) {
             $participation = new Participation(
                 user: $user,
                 availability: $availability
             );
-            $this->entityManager->persist($participation);
-            $this->entityManager->flush();
+
+            $this->participationRepository->save($participation, true);
         }
 
         return $participation;
     }
 
-    public function savePayment(Participation $participation, Session $checkoutSession): void
+    public function savePayment(Participation $participation, Session $checkoutSession): Payment
     {
+        dump($checkoutSession->id);
         $payment = new Payment();
-        $payment->setParticipation($participation);
-        $payment->setAmount($participation->getAmount());
-        $payment->setReference($checkoutSession->id);
-        $payment->setComment($checkoutSession->toJSON());
+        $payment->setParticipation($participation)
+            ->setAmount($participation->getAmount())
+            ->setReference($checkoutSession->id)
+            ->setData($checkoutSession->toArray())
+            ->setStatus(PaymentStatusEnum::from($checkoutSession->payment_status))
+        ;
 
         $this->entityManager->persist($payment);
         $this->entityManager->flush();
+
+        return $payment;
     }
 }
