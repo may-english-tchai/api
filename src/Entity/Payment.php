@@ -3,12 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Patch;
-use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
+use App\Enum\PaymentStatusEnum;
 use App\Interface\SoftDeleteableInterface;
 use App\Interface\TimestampableInterface;
 use App\Repository\PaymentRepository;
@@ -17,17 +13,13 @@ use App\Trait\CommentEntityTrait;
 use App\Trait\IdEntityTrait;
 use App\Trait\SoftDeleteableEntityTrait;
 use App\Trait\TimestampableEntityTrait;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ApiResource(
     operations: [
         new Get(),
-        new GetCollection(),
-        new Put(),
-        new Post(),
-        new Patch(),
-        new Delete(),
     ],
     security: 'is_granted("ROLE_USER")'
 )]
@@ -42,8 +34,15 @@ class Payment implements TimestampableInterface, SoftDeleteableInterface
     use TimestampableEntityTrait;
     use SoftDeleteableEntityTrait;
 
+    #[ORM\Column(nullable: false, enumType: PaymentStatusEnum::class)]
+    private ?PaymentStatusEnum $status = null;
+
     #[ORM\Column(length: 255, unique: true)]
     private ?string $reference = null;
+
+    /** @var array<string, mixed> */
+    #[ORM\Column(type: Types::JSON)]
+    private array $data = [];
 
     #[ORM\ManyToOne(inversedBy: 'payments')]
     #[ORM\JoinColumn(nullable: false)]
@@ -76,5 +75,45 @@ class Payment implements TimestampableInterface, SoftDeleteableInterface
         $this->participation = $participation;
 
         return $this;
+    }
+
+    public function setStatus(?PaymentStatusEnum $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getStatus(): ?PaymentStatusEnum
+    {
+        return $this->status;
+    }
+
+    public function getStatusLabel(): ?string
+    {
+        return $this->status?->value;
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     */
+    public function setData(array $data): self
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getData(): array
+    {
+        return $this->data;
+    }
+
+    public function getDataToJson(): false|string
+    {
+        return json_encode($this->data, JSON_THROW_ON_ERROR);
     }
 }

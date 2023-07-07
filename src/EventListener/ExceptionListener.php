@@ -13,6 +13,11 @@ class ExceptionListener
 {
     public function __invoke(ExceptionEvent $event): void
     {
+        $contentType = $event->getRequest()->headers->get('Content-Type');
+        if ('application/json' !== $contentType) {
+            return;
+        }
+
         // You get the exception object from the received event
         $exception = $event->getThrowable();
 

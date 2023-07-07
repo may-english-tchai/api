@@ -21,6 +21,11 @@ trait AmountEntityTrait
         return $this->amount;
     }
 
+    public function getAmountMoney(): float
+    {
+        return $this->amount * 100;
+    }
+
     public function setAmount(float $amount): static
     {
         $this->amount = $amount;
