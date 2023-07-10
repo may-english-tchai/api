@@ -22,7 +22,10 @@ security:
         api:
             pattern: ^/api
             stateless: true
+            entry_point: jwt
             jwt: ~
+            refresh_jwt:
+                check_path: /api/token/refresh # or, you may use the `api_refresh_token` route name
         
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
