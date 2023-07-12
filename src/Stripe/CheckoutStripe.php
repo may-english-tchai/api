@@ -49,8 +49,8 @@ final readonly class CheckoutStripe
                 'quantity' => 1,
             ]],
             'mode' => 'payment',
-            'success_url' => $referer.'?success=true',
-            'cancel_url' => $referer.'?canceled=true',
+            'success_url' => $referer.'/payment-success/'.$participation->getId(),
+            'cancel_url' => $referer.'/payment-canceled/'.$participation->getId(),
         ]);
 
         $this->savePayment($participation, $checkoutSession);
@@ -82,7 +82,6 @@ final readonly class CheckoutStripe
 
     public function savePayment(Participation $participation, Session $checkoutSession): Payment
     {
-        dump($checkoutSession->id);
         $payment = new Payment();
         $payment->setParticipation($participation)
             ->setAmount($participation->getAmount())
