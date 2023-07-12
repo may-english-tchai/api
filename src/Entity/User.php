@@ -60,6 +60,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Timesta
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Participation::class, orphanRemoval: true)]
     private Collection $participations;
 
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private ?string $phone = null;
+
     public function __construct()
     {
         $this->participations = new ArrayCollection();
@@ -158,6 +163,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Timesta
         }
 
         $participation->setUser(null);
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): self
+    {
+        $this->phone = $phone;
 
         return $this;
     }
