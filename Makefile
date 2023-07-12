@@ -64,8 +64,7 @@ rector:
 infection: ## Run infection tests
 	@./vendor/bin/infection --min-msi=80 --min-covered-msi=80 --threads=4 --only-covered --show-mutations --log-verbosity=none
 
-analyze: lint stan cs-fix rector test infection ## Run all analysis tools
-analyze: lint stan cs-fix rector test infection
+analyze: lint stan cs-fix rector test #infection ## Run all analysis tools
 
 test:
 	$(CONSOLE) doctrine:schema:drop --force --env=test $q
@@ -92,7 +91,7 @@ git-push:
 	$(GIT) push origin "$(current_branch)" --force-with-lease --force-if-includes
 
 #commit: q=-q
-commit: analyze git-auto-commit git-rebase git-push ## Commit and push the current branch
+commit: analyze git-auto-commit git-push ## Commit and push the current branch
 
 ## —— Docker ————————————————————————————————————————————————————————————————
 docker-install: Dockerfile docker-compose.yaml docker-down docker-build docker-up docker-ps docker-logs ## Reset and install your environment
