@@ -7,7 +7,7 @@ isContainerRunning := $(shell docker info > /dev/null 2>&1 && docker ps | grep "
 
 DOCKER=docker compose
 COMPOSER=symfony composer
-CONSOLE=@php bin/console
+CONSOLE=php bin/console
 GIT=@git
 
 .DEFAULT_GOAL := docker-sh
@@ -15,36 +15,37 @@ GIT=@git
 help: ## Outputs this help screen
 	@grep -E '(^[a-zA-Z0-9_-]+:.*?## .*$$)|(^## )' Makefile | awk 'BEGIN {FS = ":.*?## "}{printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
+env=dev
 sf-cc:
 	@chmod -R 777 ./
-	$(CONSOLE) c:c
+	@APP_ENV=$(env) $(CONSOLE) c:c
 
 composer-install:
-	$(COMPOSER) install
+	$(COMPOSER) install $q
 
 composer-update:
-	$(COMPOSER) update --with-all-dependencies
+	$(COMPOSER) update --with-all-dependencies $q
 
 database-drop:
-	$(CONSOLE) doctrine:schema:drop --force --full-database
+	@APP_ENV=$(env) $(CONSOLE) doctrine:schema:drop --force --full-database $q
 
 doctrine-migration:
-	$(CONSOLE) make:migration
+	@APP_ENV=$(env) $(CONSOLE) make:migration $q
 
 doctrine-migrate: ## Apply doctrine migrate
-	$(CONSOLE) doctrine:migrations:migrate -n
+	@APP_ENV=$(env) $(CONSOLE) doctrine:migrations:migrate -n $q
 
 doctrine-schema-create:
-	$(CONSOLE) doctrine:schema:create
+	@APP_ENV=$(env) $(CONSOLE) doctrine:schema:create $q
 
 doctrine-reset: database-drop doctrine-migrate
 doctrine-apply-migration: doctrine-reset doctrine-migration doctrine-reset  ## Apply doctrine migrate and reset database
 
 fixtures-load: #doctrine-reset ## Load fixtures
-	$(CONSOLE) hautelook:fixtures:load -n
+	@APP_ENV=$(env) $(CONSOLE) hautelook:fixtures:load -n --env=$(env) $q
 
 jwt-generate:
-	$(CONSOLE) lexik:jwt:generate-keypair --skip-if-exists
+	@APP_ENV=$(env) $(CONSOLE) lexik:jwt:generate-keypair --skip-if-exists $q
 
 lint:
 	$(CONSOLE) lint:container $q
@@ -53,24 +54,25 @@ lint:
 	$(CONSOLE) doctrine:schema:validate --skip-sync $q
 
 stan:
-	@./vendor/bin/phpstan analyse $q --memory-limit 256M
+	@APP_ENV=$(env) ./vendor/bin/phpstan analyse $q --memory-limit 256M
 
 cs-fix:
-	@./vendor/bin/php-cs-fixer fix $q
+	@APP_ENV=$(env) ./vendor/bin/php-cs-fixer fix $q
 
 rector:
-	@./vendor/bin/rector --no-progress-bar
+	@APP_ENV=$(env) ./vendor/bin/rector --no-progress-bar $q
 
 infection: ## Run infection tests
-	@./vendor/bin/infection --min-msi=80 --min-covered-msi=80 --threads=4 --only-covered --show-mutations --log-verbosity=none
+	@APP_ENV=$(env) ./vendor/bin/infection --min-msi=80 --min-covered-msi=80 --threads=4 --only-covered --show-mutations --log-verbosity=none $q
 
-analyze: lint stan cs-fix rector test #infection ## Run all analysis tools
+analyze: lint stan cs-fix rector tests #infection ## Run all analysis tools
 
+
+env=test
 test:
-	$(CONSOLE) doctrine:schema:drop --force --env=test $q
-	$(CONSOLE) doctrine:schema:create --env=test $q
-	$(CONSOLE) hautelook:fixtures:load -n $q --env=test
-	APP_ENV=test ./vendor/bin/phpunit
+	APP_ENV=$(env) ./vendor/bin/phpunit $(c)
+
+tests: database-drop doctrine-schema-create fixtures-load test
 
 ## —— Git ————————————————————————————————————————————————————————————————
 git-clean-branches: ## Clean merged branches

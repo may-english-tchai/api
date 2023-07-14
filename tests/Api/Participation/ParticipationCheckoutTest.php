@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Api;
+namespace App\Tests\Api\Participation;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\Availability;
@@ -48,7 +48,6 @@ class ParticipationCheckoutTest extends ApiTestCase
     {
         $availability = static::getContainer()->get(AvailabilityRepository::class)->find('43b9bee6-8b59-4c64-9113-80bf4a7356c0');
         static::assertInstanceOf(Availability::class, $availability);
-        // $this->expectException(ClientExceptionInterface::class);
         static::createClient()->loginUser(static::getUser('ahmed@gmail.com'))
             ->request(Request::METHOD_POST, '/api/participations/checkout/'.$availability->getId());
         static::assertResponseStatusCodeSame(400);
