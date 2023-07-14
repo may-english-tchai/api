@@ -5,6 +5,7 @@ namespace App\Controller\Participation;
 use App\Entity\Availability;
 use App\Entity\User;
 use App\Exception\UnexpectedValueException;
+use App\Helper\HttpHelper;
 use App\Stripe\CheckoutStripe;
 use Stripe\Exception\ApiErrorException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,7 +39,7 @@ class ParticipationCheckoutController extends AbstractController
             throw new UnexpectedValueException(statusCode: Response::HTTP_BAD_REQUEST, message: 'Referer is null');
         }
 
-        $referer = (string) $request->headers->get('referer');
+        $referer = HttpHelper::clear((string) $request->headers->get('referer'));
 
         $session = $checkoutStripe($availability, $referer, $user);
 

@@ -3,6 +3,7 @@ App\Entity\Participation:
         id: 9aed42c1-be58-4610-92f5-f8789e35293c
         availability: "@availability_1"
         user: "@user_abdou"
+        amount: 29.99
     participation_2:
         availability: "@availability_4"
         user: "@user_abdou"
