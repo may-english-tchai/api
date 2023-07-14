@@ -67,6 +67,7 @@ infection: ## Run infection tests
 
 analyze: lint stan cs-fix rector tests #infection ## Run all analysis tools
 
+
 env=test
 test:
 	APP_ENV=$(env) ./vendor/bin/phpunit $(c)
