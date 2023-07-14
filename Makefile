@@ -65,7 +65,7 @@ rector:
 infection: ## Run infection tests
 	@APP_ENV=$(env) ./vendor/bin/infection --min-msi=80 --min-covered-msi=80 --threads=4 --only-covered --show-mutations --log-verbosity=none $q
 
-analyze: lint stan cs-fix rector test #infection ## Run all analysis tools
+analyze: lint stan cs-fix rector tests #infection ## Run all analysis tools
 
 env=test
 test:
