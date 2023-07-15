@@ -32,8 +32,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: AvailabilityStatusRepository::class)]
 class AvailabilityStatus implements EntityInterface
 {
-    use IdEntityTrait;
     use CodeEntityTrait;
+    use IdEntityTrait;
     use LabelEntityTrait;
 
     public function __toString(): string

@@ -11,11 +11,12 @@ CONSOLE=php bin/console
 GIT=@git
 
 .DEFAULT_GOAL := docker-sh
+env=dev
 
 help: ## Outputs this help screen
 	@grep -E '(^[a-zA-Z0-9_-]+:.*?## .*$$)|(^## )' Makefile | awk 'BEGIN {FS = ":.*?## "}{printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
-env=dev
+
 sf-cc:
 	@chmod -R 777 ./
 	@APP_ENV=$(env) $(CONSOLE) c:c
@@ -42,7 +43,7 @@ doctrine-reset: database-drop doctrine-migrate
 doctrine-apply-migration: doctrine-reset doctrine-migration doctrine-reset  ## Apply doctrine migrate and reset database
 
 fixtures-load: #doctrine-reset ## Load fixtures
-	@APP_ENV=$(env) $(CONSOLE) hautelook:fixtures:load -n --env=$(env) $q
+	APP_ENV=$(env) $(CONSOLE) hautelook:fixtures:load -n $q
 
 jwt-generate:
 	@APP_ENV=$(env) $(CONSOLE) lexik:jwt:generate-keypair --skip-if-exists $q
@@ -57,7 +58,7 @@ stan:
 	@APP_ENV=$(env) ./vendor/bin/phpstan analyse $q --memory-limit 256M
 
 cs-fix:
-	@APP_ENV=$(env) ./vendor/bin/php-cs-fixer fix $q
+	@APP_ENV=$(env) ./vendor/bin/php-cs-fixer fix $q --allow-risky=yes
 
 rector:
 	@APP_ENV=$(env) ./vendor/bin/rector --no-progress-bar $q
@@ -67,17 +68,17 @@ infection: ## Run infection tests
 
 analyze: lint stan cs-fix rector tests #infection ## Run all analysis tools
 
+test: env=test
+test: ## Run tests
+	@APP_ENV=$(env) ./vendor/bin/phpunit $(c)
 
-env=test
-test:
-	APP_ENV=$(env) ./vendor/bin/phpunit $(c)
-
+tests: env=test
 tests: database-drop doctrine-schema-create fixtures-load test
 
 ## —— Git ————————————————————————————————————————————————————————————————
 git-clean-branches: ## Clean merged branches
-	git remote prune origin
-	(git branch --merged | egrep -v "(^\*|main|master|dev)" | xargs git branch -d) || true
+	@git remote prune origin
+	@(git branch --merged | egrep -v "(^\*|main|master|dev)" | xargs git branch -d) || true
 
 git-rebase: ## Rebase the current branch
 	$(GIT) pull --rebase $q

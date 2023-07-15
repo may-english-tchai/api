@@ -37,11 +37,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ParticipationRepository::class)]
 class Participation implements TimestampableInterface, SoftDeleteableInterface
 {
-    use IdEntityTrait;
     use AmountEntityTrait;
     use CommentEntityTrait;
-    use TimestampableEntityTrait;
+    use IdEntityTrait;
     use SoftDeleteableEntityTrait;
+    use TimestampableEntityTrait;
 
     #[ORM\Column(nullable: true)]
     private ?int $note = null;

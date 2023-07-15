@@ -4,6 +4,6 @@ namespace App\Enum;
 
 enum PaymentStatusEnum: string
 {
-    case unpaid = 'unpaid';
     case paid = 'paid';
+    case unpaid = 'unpaid';
 }

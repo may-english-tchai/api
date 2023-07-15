@@ -9,6 +9,8 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 
+use function is_string;
+
 trait IdEntityTrait
 {
     #[Groups(['id', 'id:write'])]
@@ -25,7 +27,7 @@ trait IdEntityTrait
 
     public function setId(Uuid|string $id): static
     {
-        $this->id = \is_string($id) ? Uuid::fromString($id) : $id;
+        $this->id = is_string($id) ? Uuid::fromString($id) : $id;
 
         return $this;
     }

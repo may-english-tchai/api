@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Exception;
 
 use App\Interface\AppExceptionInterface;
+use Exception;
 
-class UnexpectedTypeException extends \Exception implements AppExceptionInterface
+class UnexpectedTypeException extends Exception implements AppExceptionInterface
 {
     public function __construct(mixed $value, string $expectedType)
     {

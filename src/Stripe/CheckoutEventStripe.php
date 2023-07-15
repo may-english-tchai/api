@@ -15,20 +15,23 @@ readonly class CheckoutEventStripe
     ) {
     }
 
+    /**
+     * @throws UnexpectedResultException
+     */
     public function __invoke(Event $event): Payment
     {
         /** @var object{object: object{ id: string, payment_status: string}} $data */
         $data = $event->data;
         $reference = $data->object->id;
         $payment = $this->paymentRepository->findOneBy(['reference' => $reference]);
-        if (!$payment instanceof \App\Entity\Payment) {
+        if (!$payment instanceof Payment) {
             throw new UnexpectedResultException('not found payment with reference '.$reference);
         }
 
         $status = PaymentStatusEnum::from($data->object->payment_status);
 
         $payment->setStatus($status);
-        $this->paymentRepository->save($payment);
+        $this->paymentRepository->save($payment, true);
 
         return $payment;
     }

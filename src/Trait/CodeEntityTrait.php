@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Trait;
 
+use BackedEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+
+use function is_string;
 
 trait CodeEntityTrait
 {
@@ -22,7 +25,7 @@ trait CodeEntityTrait
         return $this->code;
     }
 
-    public function setCode(\BackedEnum|string $code): static
+    public function setCode(BackedEnum|string $code): static
     {
         $this->code = is_string($code) ? $code : (string) $code->value;
 

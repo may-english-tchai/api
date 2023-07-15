@@ -38,10 +38,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Restaurant implements TimestampableInterface, SoftDeleteableInterface
 {
     use IdEntityTrait;
-    use NameEntityTrait;
     use IsEnabledEntityTrait;
-    use TimestampableEntityTrait;
+    use NameEntityTrait;
     use SoftDeleteableEntityTrait;
+    use TimestampableEntityTrait;
 
     #[Assert\Length(max: 255)]
     #[ORM\Column(length: 255, nullable: true)]

@@ -35,10 +35,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: LanguageRepository::class)]
 class Language implements EntityInterface
 {
-    use IdEntityTrait;
     use CodeEntityTrait;
-    use LabelEntityTrait;
+    use IdEntityTrait;
     use IsEnabledEntityTrait;
+    use LabelEntityTrait;
 
     #[ORM\ManyToMany(targetEntity: Teacher::class, inversedBy: 'languages')]
     private Collection $teachers;

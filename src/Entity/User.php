@@ -38,11 +38,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, TimestampableInterface
 {
-    use IdEntityTrait;
     use EmailEntityTrait;
+    use IdEntityTrait;
+    use IsEnabledEntityTrait;
     use NameEntityTrait;
     use SurnameEntityTrait;
-    use IsEnabledEntityTrait;
     use TimestampableEntityTrait;
 
     /**
