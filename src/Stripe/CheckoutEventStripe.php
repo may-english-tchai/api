@@ -28,7 +28,9 @@ readonly class CheckoutEventStripe
         $status = PaymentStatusEnum::from($data->object->payment_status);
 
         $payment->setStatus($status);
-        $this->paymentRepository->save($payment);
+        $this->paymentRepository->save($payment, true);
+
+        dump($payment);
 
         return $payment;
     }

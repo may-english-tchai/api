@@ -2,6 +2,7 @@
 
 namespace App\Controller\Payment;
 
+use App\Exception\UnexpectedResultException;
 use App\Stripe\CheckoutEventStripe;
 use Stripe\Event;
 use Stripe\Stripe;
@@ -13,6 +14,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CheckoutEventController extends AbstractController
 {
+    /**
+     * @throws UnexpectedResultException
+     */
     #[Route('/api/payment/checkout-event', name: 'api_participation_checkout_event', methods: [Request::METHOD_POST])]
     public function __invoke(
         Request $request,

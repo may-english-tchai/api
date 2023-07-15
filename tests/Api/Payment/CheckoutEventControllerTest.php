@@ -1,16 +1,21 @@
 <?php
 
-namespace App\Tests\Api\Participation;
+namespace App\Tests\Api\Payment;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\Payment;
 use App\Enum\PaymentStatusEnum;
 use App\Repository\PaymentRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class CheckoutEventControllerTest extends ApiTestCase
 {
-    public function testValidePaymentCheckout(): void
+    /**
+     * @throws TransportExceptionInterface
+     * @throws \Exception
+     */
+    public function testValidPaymentCheckout(): void
     {
         $payment = static::getContainer()->get(PaymentRepository::class)->find('01d03d58-223b-11ee-8c90-7a506f18fbbd');
         static::assertInstanceOf(Payment::class, $payment);
