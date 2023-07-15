@@ -58,7 +58,7 @@ stan:
 	@APP_ENV=$(env) ./vendor/bin/phpstan analyse $q --memory-limit 256M
 
 cs-fix:
-	@APP_ENV=$(env) ./vendor/bin/php-cs-fixer fix $q
+	@APP_ENV=$(env) ./vendor/bin/php-cs-fixer fix $q --allow-risky=yes
 
 rector:
 	@APP_ENV=$(env) ./vendor/bin/rector --no-progress-bar $q

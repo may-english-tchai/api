@@ -7,6 +7,8 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
+use function count;
+
 class MaxCapacityValidator extends ConstraintValidator
 {
     public function validate(mixed $value, Constraint $constraint)

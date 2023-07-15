@@ -9,7 +9,6 @@ use Rector\Set\ValueObject\SetList;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->paths([
-        __DIR__.'/config',
         __DIR__.'/migrations',
         __DIR__.'/public',
         __DIR__.'/src',
@@ -20,6 +19,7 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->rule(InlineConstructorDefaultToPropertyRector::class);
 
     // define sets of rules
+    $rectorConfig->importNames();
     $rectorConfig->sets([
         LevelSetList::UP_TO_PHP_82,
         SetList::CODE_QUALITY,

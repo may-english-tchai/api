@@ -40,13 +40,13 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: TeacherRepository::class)]
 class Teacher implements TimestampableInterface, SoftDeleteableInterface
 {
-    use IdEntityTrait;
-    use NameEntityTrait;
-    use SurnameEntityTrait;
     use EmailEntityTrait;
+    use IdEntityTrait;
     use IsEnabledEntityTrait;
-    use TimestampableEntityTrait;
+    use NameEntityTrait;
     use SoftDeleteableEntityTrait;
+    use SurnameEntityTrait;
+    use TimestampableEntityTrait;
 
     #[ORM\ManyToMany(targetEntity: Language::class, mappedBy: 'teachers', fetch: 'EXTRA_LAZY')]
     private Collection $languages;

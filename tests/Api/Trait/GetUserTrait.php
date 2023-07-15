@@ -5,6 +5,8 @@ namespace App\Tests\Api\Trait;
 use App\Entity\User;
 use App\Repository\UserRepository;
 
+use function assert;
+
 trait GetUserTrait
 {
     public function getUser(string $email): User

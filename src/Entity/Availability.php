@@ -23,6 +23,7 @@ use App\Trait\PriceEntityTrait;
 use App\Trait\SoftDeleteableEntityTrait;
 use App\Trait\TimestampableEntityTrait;
 use App\Validators\Constraints\MaxCapacity;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -48,15 +49,15 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[MaxCapacity]
 class Availability implements TimestampableInterface, SoftDeleteableInterface
 {
-    use IdEntityTrait;
-    use PriceEntityTrait;
     use CommentEntityTrait;
-    use TimestampableEntityTrait;
-    use SoftDeleteableEntityTrait;
+    use IdEntityTrait;
     use IsEnabledEntityTrait;
+    use PriceEntityTrait;
+    use SoftDeleteableEntityTrait;
+    use TimestampableEntityTrait;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    private ?\DateTimeInterface $start = null;
+    private ?DateTimeInterface $start = null;
 
     #[ORM\Column(options: ['default' => 60])]
     private ?int $duration = null;
@@ -98,12 +99,12 @@ class Availability implements TimestampableInterface, SoftDeleteableInterface
         );
     }
 
-    public function getStart(): ?\DateTimeInterface
+    public function getStart(): ?DateTimeInterface
     {
         return $this->start;
     }
 
-    public function setStart(\DateTimeInterface $start): self
+    public function setStart(DateTimeInterface $start): self
     {
         $this->start = $start;
 

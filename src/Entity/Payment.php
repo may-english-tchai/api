@@ -15,7 +15,10 @@ use App\Trait\SoftDeleteableEntityTrait;
 use App\Trait\TimestampableEntityTrait;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JsonException;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+use const JSON_THROW_ON_ERROR;
 
 #[ApiResource(
     operations: [
@@ -28,11 +31,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: PaymentRepository::class)]
 class Payment implements TimestampableInterface, SoftDeleteableInterface
 {
-    use IdEntityTrait;
     use AmountEntityTrait;
     use CommentEntityTrait;
-    use TimestampableEntityTrait;
+    use IdEntityTrait;
     use SoftDeleteableEntityTrait;
+    use TimestampableEntityTrait;
 
     #[ORM\Column(nullable: false, enumType: PaymentStatusEnum::class)]
     private ?PaymentStatusEnum $status = null;
@@ -113,7 +116,7 @@ class Payment implements TimestampableInterface, SoftDeleteableInterface
     }
 
     /**
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function getDataToJson(): false|string
     {

@@ -21,8 +21,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
 class Contact extends Content
 {
-    use NameEntityTrait;
     use EmailEntityTrait;
+    use NameEntityTrait;
 
     #[Groups(['email', 'email:write'])]
     #[Assert\Email]

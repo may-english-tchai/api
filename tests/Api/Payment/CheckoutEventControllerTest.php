@@ -6,6 +6,7 @@ use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\Payment;
 use App\Enum\PaymentStatusEnum;
 use App\Repository\PaymentRepository;
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
@@ -13,7 +14,7 @@ class CheckoutEventControllerTest extends ApiTestCase
 {
     /**
      * @throws TransportExceptionInterface
-     * @throws \Exception
+     * @throws Exception
      */
     public function testValidPaymentCheckout(): void
     {

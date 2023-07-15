@@ -15,8 +15,8 @@ class Content implements EntityInterface
 {
     use IdEntityTrait;
     use IsEnabledEntityTrait;
-    use TimestampableEntityTrait;
     use SoftDeleteableEntityTrait;
+    use TimestampableEntityTrait;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $subject = null;
