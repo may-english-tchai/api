@@ -38,7 +38,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
         new Post(security: 'is_granted("ROLE_TEACHER")'),
         new Patch(security: 'is_granted("ROLE_TEACHER")'),
         new Delete(security: 'is_granted("ROLE_TEACHER")'),
-    ]
+    ],
+    order: ['start' => 'ASC']
 )]
 #[ApiFilter(SearchFilter::class, properties: ['isEnabled' => 'exact'])]
 #[ApiFilter(DateFilter::class, properties: ['start'])]

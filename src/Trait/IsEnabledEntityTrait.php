@@ -15,12 +15,12 @@ trait IsEnabledEntityTrait
     #[ORM\Column(options: ['default' => true])]
     protected bool $isEnabled = true;
 
-    public function getIsEnabled(): ?bool
+    public function getIsEnabled(): bool
     {
         return $this->isEnabled;
     }
 
-    public function isEnabled(): ?bool
+    public function isEnabled(): bool
     {
         return $this->isEnabled;
     }
