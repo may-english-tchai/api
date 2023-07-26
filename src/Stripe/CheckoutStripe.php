@@ -9,7 +9,7 @@ use App\Entity\Payment;
 use App\Entity\User;
 use App\Enum\PaymentStatusEnum;
 use App\Repository\ParticipationRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\PaymentRepository;
 use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Stripe;
@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 final readonly class CheckoutStripe
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
+        private PaymentRepository $paymentRepository,
         private ParticipationRepository $participationRepository,
         #[Autowire('%env(string:STRIPE_SECRET)%')]
         private string $stripeSecret,
@@ -30,38 +30,40 @@ final readonly class CheckoutStripe
      */
     public function __invoke(Availability $availability, string $referer, User $user): CheckoutStripeDto
     {
-        $participation = $this->getParticipation($user, $availability);
+        $payment = $this->preparePayment($user, $availability);
 
         Stripe::setApiKey($this->stripeSecret);
         $checkoutSession = Session::create([
             'line_items' => [[
                 'price_data' => [
                     'currency' => 'eur',
-                    'unit_amount_decimal' => $participation->getAmount() * 100,
+                    'unit_amount_decimal' => $payment->getAmount() * 100,
                     'product_data' => [
                         'name' => (string) $availability,
                         'metadata' => [
                             'availability_id' => $availability->getId(),
-                            'participation_id' => $participation->getId(),
+                            'participation_id' => $payment->getParticipation()?->getId(),
+                            'payment_id' => $payment->getId(),
                         ],
                     ],
                 ],
                 'quantity' => 1,
             ]],
-            'mode' => 'payment',
-            'success_url' => $referer.'/payment-success/'.$participation->getId(),
-            'cancel_url' => $referer.'/payment-canceled/'.$participation->getId(),
+            'mode' => Session::MODE_PAYMENT,
+            'success_url' => sprintf('%s/payment-success/%s', $referer, $payment->getId()),
+            'cancel_url' => sprintf('%s/payment-canceled/%s', $referer, $payment->getId()),
         ]);
 
-        $this->savePayment($participation, $checkoutSession);
+        $this->saveCheckoutPayment($payment, $checkoutSession);
 
         return new CheckoutStripeDto(
             sessionId: $checkoutSession->id,
+            paymentId: $payment->getId(),
             url: $checkoutSession->url,
         );
     }
 
-    public function getParticipation(User $user, Availability $availability): Participation
+    public function preparePayment(User $user, Availability $availability): Payment
     {
         $participation = $this->participationRepository->findOneBy([
             'user' => $user,
@@ -77,21 +79,25 @@ final readonly class CheckoutStripe
             $this->participationRepository->save($participation, true);
         }
 
-        return $participation;
+        $payment = (new Payment())
+            ->setParticipation($participation)
+            ->setAmount($participation->getAmount())
+            ->setStatus(PaymentStatusEnum::prepare)
+        ;
+
+        $this->paymentRepository->save($payment, true);
+
+        return $payment;
     }
 
-    public function savePayment(Participation $participation, Session $checkoutSession): Payment
+    public function saveCheckoutPayment(Payment $payment, Session $checkoutSession): Payment
     {
-        $payment = new Payment();
-        $payment->setParticipation($participation)
-            ->setAmount($participation->getAmount())
-            ->setReference($checkoutSession->id)
+        $payment->setReference($checkoutSession->id)
             ->setData($checkoutSession->toArray())
             ->setStatus(PaymentStatusEnum::from($checkoutSession->payment_status))
         ;
 
-        $this->entityManager->persist($payment);
-        $this->entityManager->flush();
+        $this->paymentRepository->save($payment, true);
 
         return $payment;
     }

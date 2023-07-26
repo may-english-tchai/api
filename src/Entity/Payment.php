@@ -40,7 +40,7 @@ class Payment implements TimestampableInterface, SoftDeleteableInterface
     #[ORM\Column(nullable: false, enumType: PaymentStatusEnum::class)]
     private ?PaymentStatusEnum $status = null;
 
-    #[ORM\Column(length: 255, unique: true)]
+    #[ORM\Column(length: 255, unique: true, nullable: true)]
     private ?string $reference = null;
 
     /** @var array<string, mixed> */
@@ -53,7 +53,7 @@ class Payment implements TimestampableInterface, SoftDeleteableInterface
 
     public function __toString(): string
     {
-        return sprintf('%s - %s', $this->getReference(), $this->getParticipation());
+        return sprintf('%s - %s €', $this->getReference(), $this->getAmount());
     }
 
     public function getReference(): ?string

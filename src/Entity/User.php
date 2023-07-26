@@ -4,13 +4,13 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\GraphQl\Query;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Interface\TimestampableInterface;
 use App\Repository\UserRepository;
+use App\Resolver\User\MeResolver;
 use App\Trait\EmailEntityTrait;
 use App\Trait\IdEntityTrait;
 use App\Trait\IsEnabledEntityTrait;
@@ -25,14 +25,16 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ApiResource(
     operations: [
-        new Get(),
-        new GetCollection(),
-        new Put(),
+        new Put(security: 'is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER") and object == user)'),
         new Post(security: 'is_granted("PUBLIC_ACCESS")'),
-        new Patch(),
-        new Delete(security: 'is_granted("ROLE_ADMIN")'),
+        new Patch(security: 'is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER") and object == user)'),
+        new Delete(security: 'is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER") and object == user)'),
     ],
-    security: 'is_granted("ROLE_USER")'
+    security: 'is_granted("ROLE_USER")',
+    graphQlOperations: [
+        new Query(),
+        new Query(resolver: MeResolver::class, args: [], security: 'is_granted("ROLE_USER")', name: 'me'),
+    ]
 )]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
