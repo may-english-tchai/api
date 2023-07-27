@@ -33,7 +33,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
     security: 'is_granted("ROLE_USER")',
     graphQlOperations: [
         new Query(),
-        new Query(resolver: MeResolver::class, args: [], security: 'is_granted("ROLE_USER")', name: 'me'),
+        new Query(
+            resolver: MeResolver::class,
+            args: [],
+            security: 'is_granted("ROLE_USER")',
+            securityMessage: 'You are not logged in',
+            name: 'me'
+        ),
     ]
 )]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
