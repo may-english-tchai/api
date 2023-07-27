@@ -50,8 +50,8 @@ final readonly class CheckoutStripe
                 'quantity' => 1,
             ]],
             'mode' => Session::MODE_PAYMENT,
-            'success_url' => sprintf('%s/payment-success/%s', $referer, $payment->getId()),
-            'cancel_url' => sprintf('%s/payment-canceled/%s', $referer, $payment->getId()),
+            'success_url' => sprintf('%s/payment/success?id=%s', $referer, $payment->getId()),
+            'cancel_url' => sprintf('%s/payment/canceled?id=%s', $referer, $payment->getId()),
         ]);
 
         $this->saveCheckoutPayment($payment, $checkoutSession);

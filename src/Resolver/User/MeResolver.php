@@ -23,8 +23,11 @@ readonly class MeResolver implements QueryItemResolverInterface
      */
     public function __invoke(?object $item, array $context): User
     {
-        /** @var User $user */
         $user = $this->security->getUser();
+        if (!$user instanceof User) {
+            throw new UnexpectedResultException('You are not logged in');
+        }
+
         if (!$user->isEnabled()) {
             throw new UnexpectedResultException('User is not enabled');
         }
