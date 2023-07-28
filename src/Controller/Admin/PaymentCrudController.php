@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Payment;
-use App\Enum\PaymentStatusEnum;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
@@ -12,8 +12,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use Symfony\Component\Form\Extension\Core\Type\EnumType;
 
 class PaymentCrudController extends AbstractCrudController
 {
@@ -22,24 +20,30 @@ class PaymentCrudController extends AbstractCrudController
         return Payment::class;
     }
 
+    public function configureActions(Actions $actions): Actions
+    {
+        $actions->disable('new');
+        $actions->disable('delete');
+        $actions->disable('edit')
+        ;
+
+        return parent::configureActions($actions);
+    }
+
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
-        yield AssociationField::new('participation')
-            ->setRequired(true)
-            ->setDisabled();
-        yield MoneyField::new('amountMoney')
+
+        yield AssociationField::new('participation');
+
+        yield MoneyField::new('amount')
             ->setCurrency('EUR')
-            ->setStoredAsCents()
-            ->setDisabled()
+            ->setStoredAsCents(false)
         ;
-        yield Field::new('reference')->setDisabled();
-        yield TextField::new('statusLabel')->hideOnForm();
+        yield Field::new('reference');
+
         yield ChoiceField::new('status')
-            ->setFormType(EnumType::class)
-            ->setFormTypeOption('class', PaymentStatusEnum::class)
-            ->setChoices(['Payments' => PaymentStatusEnum::cases()])
-            ->onlyOnForms()
+            ->formatValue(static fn (string $value, Payment $entity) => $entity->getStatus()?->value)
         ;
         yield CodeEditorField::new('dataToJson')->onlyOnDetail();
         yield TextEditorField::new('comment')->onlyOnDetail();
