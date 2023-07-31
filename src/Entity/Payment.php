@@ -13,6 +13,7 @@ use App\Trait\CommentEntityTrait;
 use App\Trait\IdEntityTrait;
 use App\Trait\SoftDeleteableEntityTrait;
 use App\Trait\TimestampableEntityTrait;
+use App\Validators\Constraints\ParticipationPaid;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JsonException;
@@ -29,6 +30,7 @@ use const JSON_THROW_ON_ERROR;
 #[UniqueEntity(fields: ['reference'])]
 #[ORM\UniqueConstraint(fields: ['reference'])]
 #[ORM\Entity(repositoryClass: PaymentRepository::class)]
+#[ParticipationPaid]
 class Payment implements TimestampableInterface, SoftDeleteableInterface
 {
     use AmountEntityTrait;

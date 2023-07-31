@@ -7,6 +7,7 @@ App\Entity\Participation:
     participation_2:
         availability: "@availability_4"
         user: "@user_abdou"
+        amount: 15.00
     participation_3:
         availability: "@availability_6"
         user: "@user_abdou"

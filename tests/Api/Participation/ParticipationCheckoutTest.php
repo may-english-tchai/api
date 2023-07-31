@@ -4,8 +4,13 @@ namespace App\Tests\Api\Participation;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\Availability;
+use App\Entity\Payment;
+use App\Enum\PaymentStatusEnum;
 use App\Repository\AvailabilityRepository;
+use App\Repository\PaymentRepository;
 use App\Tests\Api\Trait\GetUserTrait;
+use Exception;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
@@ -32,6 +37,7 @@ class ParticipationCheckoutTest extends ApiTestCase
 
     /**
      * @throws TransportExceptionInterface
+     * @throws Exception
      */
     public function testUnauthorizedWithoutCredential(): void
     {
@@ -43,6 +49,7 @@ class ParticipationCheckoutTest extends ApiTestCase
 
     /**
      * @throws TransportExceptionInterface
+     * @throws Exception
      */
     public function testUnauthorizedWithoutReferer(): void
     {
@@ -51,5 +58,34 @@ class ParticipationCheckoutTest extends ApiTestCase
         static::createClient()->loginUser(static::getUser('ahmed@gmail.com'))
             ->request(Request::METHOD_POST, '/api/participations/checkout/'.$availability->getId());
         static::assertResponseStatusCodeSame(400);
+    }
+
+    /**
+     * @throws Exception
+     * @throws TransportExceptionInterface
+     */
+    #[Test]
+    public function cannotPayParticipationAlreadyPaid(): void
+    {
+        $payment = self::getContainer()->get(PaymentRepository::class)->findOneBy(['status' => PaymentStatusEnum::paid]);
+        static::assertInstanceOf(Payment::class, $payment);
+
+        $availability = $payment->getParticipation()?->getAvailability();
+        static::assertInstanceOf(Availability::class, $availability);
+
+        $user = $payment->getParticipation()?->getUser();
+        static::assertNotNull($user);
+
+        $client = static::createClient()
+            ->loginUser($user)
+            ->request(Request::METHOD_POST, '/api/participations/checkout/'.$availability->getId(), [
+                'headers' => [
+                    'referer' => 'http://localhost',
+                ],
+            ]);
+
+        static::expectException(ClientExceptionInterface::class);
+        static::assertResponseStatusCodeSame(400);
+        self::assertStringContainsString('Participation already paid', $client->getContent());
     }
 }

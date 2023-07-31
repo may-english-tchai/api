@@ -2,30 +2,30 @@
 
 namespace App\Validators\Constraints;
 
-use App\Entity\Availability;
+use App\Entity\Payment;
+use App\Enum\PaymentStatusEnum;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-use function count;
-
-class MaxCapacityValidator extends ConstraintValidator
+class ParticipationPaidValidator extends ConstraintValidator
 {
     public function validate(mixed $value, Constraint $constraint): void
     {
-        if (!$constraint instanceof MaxCapacity) {
+        if (!$constraint instanceof ParticipationPaid) {
             throw new UnexpectedTypeException($constraint, MaxCapacity::class);
         }
 
-        if (!$value instanceof Availability) {
+        if (!$value instanceof Payment) {
             return;
         }
 
-        if (null === $value->getCapacity()) {
-            return;
-        }
+        $exists = $value->getParticipation()
+            ?->getPayments()
+            ->exists(static fn (int $key, Payment $payment) => $value->getId() !== $payment->getId()
+                && PaymentStatusEnum::paid === $payment->getStatus());
 
-        if (count($value->getParticipations()) < $value->getCapacity()) {
+        if (false === $exists) {
             return;
         }
 
