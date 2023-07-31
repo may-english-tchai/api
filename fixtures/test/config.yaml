@@ -2,8 +2,8 @@ App\Entity\Config:
     config_payment_pattern_success:
         name: !php/enum App\Enum\ConfigEnum::payment_pattern_success
         type: !php/enum App\Enum\TypeValueEnum::string
-        value: '%/payment-success?id=%s'
+        value: '%s/payment-success?id=%s'
     config_payment_pattern_canceled:
         name: !php/enum App\Enum\ConfigEnum::payment_pattern_canceled
         type: !php/enum App\Enum\TypeValueEnum::string
-        value: '%/payment-canceled?id=%s'
+        value: '%s/payment-canceled?id=%s'

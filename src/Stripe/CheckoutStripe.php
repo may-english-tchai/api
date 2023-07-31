@@ -7,7 +7,10 @@ use App\Entity\Availability;
 use App\Entity\Participation;
 use App\Entity\Payment;
 use App\Entity\User;
+use App\Enum\ConfigEnum;
 use App\Enum\PaymentStatusEnum;
+use App\Exception\UnexpectedResultException;
+use App\Handler\ConfigHandler;
 use App\Repository\ParticipationRepository;
 use App\Repository\PaymentRepository;
 use Stripe\Checkout\Session;
@@ -20,6 +23,7 @@ final readonly class CheckoutStripe
     public function __construct(
         private PaymentRepository $paymentRepository,
         private ParticipationRepository $participationRepository,
+        private ConfigHandler $configHandler,
         #[Autowire('%env(string:STRIPE_SECRET)%')]
         private string $stripeSecret,
     ) {
@@ -27,12 +31,20 @@ final readonly class CheckoutStripe
 
     /**
      * @throws ApiErrorException
+     * @throws UnexpectedResultException
      */
     public function __invoke(Availability $availability, string $referer, User $user): CheckoutStripeDto
     {
         $payment = $this->preparePayment($user, $availability);
 
         Stripe::setApiKey($this->stripeSecret);
+
+        $url = fn (ConfigEnum $name) => sprintf(
+            ($this->configHandler)($name),
+            $referer,
+            $payment->getId()
+        );
+
         $checkoutSession = Session::create([
             'line_items' => [[
                 'price_data' => [
@@ -50,8 +62,8 @@ final readonly class CheckoutStripe
                 'quantity' => 1,
             ]],
             'mode' => Session::MODE_PAYMENT,
-            'success_url' => sprintf('%s/payment-success?id=%s', $referer, $payment->getId()),
-            'cancel_url' => sprintf('%s/payment-canceled?id=%s', $referer, $payment->getId()),
+            'success_url' => $url(ConfigEnum::payment_pattern_success),
+            'cancel_url' => $url(ConfigEnum::payment_pattern_success),
         ]);
 
         $this->saveCheckoutPayment($payment, $checkoutSession);
