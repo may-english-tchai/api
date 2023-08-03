@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Exception;
 
 use App\Interface\AppExceptionInterface;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Exception;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\WithHttpStatus;
 
-class UnexpectedValueException extends HttpException implements AppExceptionInterface, HttpExceptionInterface
+#[WithHttpStatus(Response::HTTP_BAD_REQUEST)]
+class UnexpectedValueException extends Exception implements AppExceptionInterface
 {
 }

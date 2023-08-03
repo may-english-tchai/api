@@ -38,7 +38,7 @@ class AvailabilityCrudController extends AbstractCrudController
         yield Field::new('capacity')->setColumns(4);
         yield Field::new('isEnabled')->setColumns(4);
         yield TextEditorField::new('comment');
-        yield AssociationField::new('participations')->hideOnForm();
+        yield AssociationField::new('participations');
         yield Field::new('createdAt')->hideOnForm();
         yield Field::new('updatedAt')->hideOnForm();
         yield Field::new('deletedAt')->hideOnForm();

@@ -1,49 +1,49 @@
 App\Entity\User:
     user_fahari:
         email: mkl.devops@gmail.com
-        roles: [ROLE_SUPER_ADMIN]
+        roles: ["@role_super_admin"]
         name: Fahari
         surname: Hamada Sidi
         password: test
     user_dhoimir:
         email: dhoimir.mgomri@gmail.com
-        roles: [ROLE_SUPER_ADMIN]
+        roles: ["@role_super_admin"]
         name: Dhoimir
         surname: Mgomri
         password: test
     user_eddy:
         email: boughanmieddy@outlook.fr
-        roles: [ROLE_SUPER_ADMIN]
+        roles: ["@role_super_admin"]
         name: Eddy
         surname: Boughanmi
         password: test
     user_faiza:
         email: faiza.mohamed.assani@gmail.com
-        roles: [ROLE_TEACHER]
+        roles: ["@role_teacher", "@role_admin"]
         name: Faiza
         surname: Mohamed Hassani
         password: test
     user_abdou:
         email: abdou@gmail.com
-        roles: [ROLE_USER]
+        roles: ["@role_user"]
         name: Abdou
         surname: Mroivili
         password: test
     user_ahmed:
         email: ahmed@gmail.com
-        roles: [ROLE_USER]
+        roles: ["@role_user"]
         name: Ahmed
         surname: Mroivili
         password: test
     user_ali:
         email: ali.mohamed@gmail.com
-        roles: [ROLE_USER]
+        roles: ["@role_user"]
         name: Ali
         surname: Mohamed
         password: test
     user_amine:
         email: amine.khaoui@outlook.fr
-        roles: [ROLE_USER]
+        roles: ["@role_user"]
         name: Amine
         surname: Khaoui
         password: \$2y\$13\$/9m29DFamoWkdG6vSuVq5Oi1oID08oXFPSLvCdV2SzSQvS73CV/O2

@@ -3,12 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Patch;
-use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
 use App\Interface\SoftDeleteableInterface;
 use App\Interface\TimestampableInterface;
 use App\Repository\RestaurentRepository;
@@ -25,10 +21,6 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations: [
         new Get(security: 'is_granted("PUBLIC_ACCESS")'),
         new GetCollection(security: 'is_granted("PUBLIC_ACCESS")'),
-        new Put(),
-        new Post(),
-        new Patch(),
-        new Delete(),
     ],
     security: 'is_granted("ROLE_ADMIN")'
 )]

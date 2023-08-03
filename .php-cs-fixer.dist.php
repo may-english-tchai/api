@@ -15,6 +15,7 @@ return (new PhpCsFixer\Config())
             'import_constants' => true,
             'import_functions' => true,
         ],
+        'phpdoc_to_comment' => ['ignored_tags' => ['var', 'phpstan-var']],
     ])
     ->setFinder($finder)
 ;

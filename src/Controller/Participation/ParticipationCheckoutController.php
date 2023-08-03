@@ -4,6 +4,7 @@ namespace App\Controller\Participation;
 
 use App\Entity\Availability;
 use App\Entity\User;
+use App\Exception\UnexpectedResultException;
 use App\Exception\UnexpectedValueException;
 use App\Helper\HttpHelper;
 use App\Stripe\CheckoutStripe;
@@ -11,7 +12,6 @@ use Stripe\Exception\ApiErrorException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -22,6 +22,7 @@ class ParticipationCheckoutController extends AbstractController
     /**
      * @throws ApiErrorException
      * @throws UnexpectedValueException
+     * @throws UnexpectedResultException
      */
     #[Route('/api/participations/checkout/{id}', name: 'api_participation_checkout', methods: [Request::METHOD_POST])]
     #[IsGranted('ROLE_USER')]
@@ -36,7 +37,7 @@ class ParticipationCheckoutController extends AbstractController
         }
 
         if (!$request->headers->has('referer')) {
-            throw new UnexpectedValueException(statusCode: Response::HTTP_BAD_REQUEST, message: 'Referer is null');
+            throw new UnexpectedValueException(message: 'Referer is null');
         }
 
         $referer = HttpHelper::clear((string) $request->headers->get('referer'));

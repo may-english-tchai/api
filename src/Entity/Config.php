@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Enum\ConfigEnum;
 use App\Enum\TypeValueEnum;
+use App\Interface\EntityInterface;
 use App\Repository\ConfigRepository;
 use App\Trait\IdEntityTrait;
 use App\Trait\IsEnabledEntityTrait;
@@ -12,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ConfigRepository::class)]
-class Config
+class Config implements EntityInterface
 {
     use IdEntityTrait;
     use IsEnabledEntityTrait;
@@ -71,5 +72,10 @@ class Config
         $this->type = $type;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->name?->value;
     }
 }

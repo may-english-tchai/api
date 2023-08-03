@@ -18,7 +18,6 @@ class ExceptionListener
             return;
         }
 
-        // You get the exception object from the received event
         $exception = $event->getThrowable();
 
         // Customize your response object to display the exception details
@@ -34,7 +33,6 @@ class ExceptionListener
             $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        // sends the modified response object to the event
         $event->setResponse($response);
     }
 }

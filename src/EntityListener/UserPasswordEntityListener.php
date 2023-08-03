@@ -4,17 +4,18 @@ namespace App\EntityListener;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
+use Doctrine\ORM\Events;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-#[AsEntityListener(event: 'prePersist', method: 'prePersist', entity: User::class)]
-final readonly class UserEntityListener
+#[AsEntityListener(event: Events::prePersist, entity: User::class)]
+final readonly class UserPasswordEntityListener
 {
     public function __construct(
         private UserPasswordHasherInterface $passwordHasher,
     ) {
     }
 
-    public function prePersist(User $user): void
+    public function __invoke(User $user): void
     {
         if (null === $user->getPassword()) {
             return;
