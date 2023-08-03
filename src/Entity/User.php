@@ -23,6 +23,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+use function is_array;
+
 #[ApiResource(
     operations: [
         new Put(security: 'is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER") and object == user)'),
@@ -54,10 +56,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Timesta
     use TimestampableEntityTrait;
 
     /**
-     * @var array<int, string>
+     * @var Collection<int, Role>
      */
-    #[ORM\Column]
-    private array $roles = [];
+    #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'users')]
+    private Collection $roles;
 
     #[ORM\Column]
     private ?string $password = null;
@@ -68,9 +70,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Timesta
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Participation::class, orphanRemoval: true)]
     private Collection $participations;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private ?string $phone = null;
 
     public function __construct()
@@ -100,19 +100,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Timesta
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
+        return array_unique([
+            ...$this->roles->map(static fn (Role $role) => (string) $role->getCode())->toArray(),
+            ...['ROLE_USER'],
+        ]);
     }
 
     /**
-     * @param array<int, string> $roles
+     * @param Collection<int, Role>|list<Role> $roles
      */
-    public function setRoles(array $roles): self
+    public function setRoles(Collection|array $roles): self
     {
+        if (is_array($roles)) {
+            $roles = new ArrayCollection($roles);
+        }
+
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function addRole(Role $role): self
+    {
+        if (!$this->roles->contains($role)) {
+            $this->roles->add($role);
+        }
 
         return $this;
     }

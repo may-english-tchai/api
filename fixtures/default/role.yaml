@@ -1,0 +1,17 @@
+App\Entity\Role:
+    role_admin:
+        id: e6da74ae-7832-4434-b461-483f2428f8d8
+        label: admin
+        code: ROLE_ADMIN
+    role_teacher:
+        id: fc8dc9b2-7947-4158-ba62-8911a193ec57
+        label: teacher
+        code: ROLE_TEACHER
+    role_user:
+        id: 9d818da8-89d5-4aa0-b6b9-826d99dccc03
+        label: user
+        code: ROLE_USER
+    role_super_admin:
+        id: d250e34d-8c9d-4af2-80e1-4dceea912db6
+        label: super_admin
+        code: ROLE_SUPER_ADMIN

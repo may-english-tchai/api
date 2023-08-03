@@ -3,11 +3,11 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Put;
+use App\Enum\PaymentStatusEnum;
 use App\Interface\SoftDeleteableInterface;
 use App\Interface\TimestampableInterface;
 use App\Repository\ParticipationRepository;
@@ -28,7 +28,6 @@ use Symfony\Component\Validator\Constraints as Assert;
         new GetCollection(security: 'is_granted("PUBLIC_ACCESS")'),
         new Put(),
         new Patch(),
-        new Delete(),
     ],
     security: 'is_granted("ROLE_USER")'
 )]
@@ -46,6 +45,9 @@ class Participation implements TimestampableInterface, SoftDeleteableInterface
     #[ORM\Column(nullable: true)]
     private ?int $note = null;
 
+    /**
+     * @param Collection<int, Payment> $payments
+     */
     public function __construct(
         #[ORM\ManyToOne(inversedBy: 'participations')]
         #[ORM\JoinColumn(nullable: false)]
@@ -64,7 +66,12 @@ class Participation implements TimestampableInterface, SoftDeleteableInterface
 
     public function __toString(): string
     {
-        return sprintf('%s - %s', $this->getAvailability(), $this->getUser());
+        return sprintf(
+            '%s %s - %s',
+            $this->isPaid() ? '✅' : '❌',
+            $this->getAvailability(),
+            $this->getUser()
+        );
     }
 
     public function getUser(): ?User
@@ -123,6 +130,18 @@ class Participation implements TimestampableInterface, SoftDeleteableInterface
         $payment->setParticipation(null);
 
         return $this;
+    }
+
+    public function isPaid(): bool
+    {
+        $total = 0;
+        $this->payments->map(static function (Payment $payment) use (&$total) {
+            if (PaymentStatusEnum::paid === $payment->getStatus()) {
+                $total += $payment->getAmount();
+            }
+        });
+
+        return $total >= $this->amount;
     }
 
     public function getNote(): ?int

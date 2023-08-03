@@ -9,6 +9,8 @@ use App\Trait\SoftDeleteableEntityTrait;
 use App\Trait\TimestampableEntityTrait;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\MappedSuperclass]
 class Content implements EntityInterface
@@ -18,10 +20,13 @@ class Content implements EntityInterface
     use SoftDeleteableEntityTrait;
     use TimestampableEntityTrait;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['content', 'content:write'])]
+    #[ORM\Column(nullable: true)]
     private ?string $subject = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Assert\NotBlank]
+    #[Groups(['content', 'content:write'])]
+    #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
     public function __toString(): string
@@ -34,14 +39,14 @@ class Content implements EntityInterface
         return $this->content;
     }
 
-    public function setContent(?string $content): self
+    public function setContent(?string $content): static
     {
         $this->content = $content;
 
         return $this;
     }
 
-    public function setSubject(?string $subject): self
+    public function setSubject(?string $subject): static
     {
         $this->subject = $subject;
 

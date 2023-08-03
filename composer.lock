@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fca4fd5c430ad4dff0de232087ab80d4",
+    "content-hash": "febfd00e5b45e206ea379922f3a8a1c0",
     "packages": [
         {
             "name": "api-platform/core",
@@ -5414,16 +5414,16 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v6.3.0",
+            "version": "v6.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "3af8ac1a3f98f6dbc55e10ae59c9e44bfc38dfaa"
+                "reference": "adb01fe097a4ee930db9258a3cc906b5beb5cf2e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/3af8ac1a3f98f6dbc55e10ae59c9e44bfc38dfaa",
-                "reference": "3af8ac1a3f98f6dbc55e10ae59c9e44bfc38dfaa",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/adb01fe097a4ee930db9258a3cc906b5beb5cf2e",
+                "reference": "adb01fe097a4ee930db9258a3cc906b5beb5cf2e",
                 "shasum": ""
             },
             "require": {
@@ -5474,7 +5474,7 @@
             "description": "Provides tools that allow your application components to communicate with each other by dispatching events and listening to them",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/event-dispatcher/tree/v6.3.0"
+                "source": "https://github.com/symfony/event-dispatcher/tree/v6.3.2"
             },
             "funding": [
                 {
@@ -5490,7 +5490,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-04-21T14:41:17+00:00"
+            "time": "2023-07-06T06:56:43+00:00"
         },
         {
             "name": "symfony/event-dispatcher-contracts",

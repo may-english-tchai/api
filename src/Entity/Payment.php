@@ -55,7 +55,12 @@ class Payment implements TimestampableInterface, SoftDeleteableInterface
 
     public function __toString(): string
     {
-        return sprintf('%s - %s €', $this->getReference(), $this->getAmount());
+        return sprintf(
+            '%s %s - %s €',
+            PaymentStatusEnum::paid === $this->status ? '✅' : '❌',
+            $this->getReference(),
+            $this->getAmount()
+        );
     }
 
     public function getReference(): ?string

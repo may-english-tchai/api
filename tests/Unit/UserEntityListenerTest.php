@@ -3,7 +3,7 @@
 namespace App\Tests\Unit;
 
 use App\Entity\User;
-use App\EntityListener\UserEntityListener;
+use App\EntityListener\UserPasswordEntityListener;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -29,8 +29,8 @@ class UserEntityListenerTest extends TestCase
             ->with($user, 'password')
             ->willReturn('hashedPassword');
 
-        $entityListener = new UserEntityListener($hashMock);
-        $entityListener->prePersist($user);
+        $entityListener = new UserPasswordEntityListener($hashMock);
+        $entityListener($user);
 
         static::assertSame('hashedPassword', $user->getPassword());
     }

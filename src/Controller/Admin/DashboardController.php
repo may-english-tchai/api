@@ -8,9 +8,11 @@ use App\Entity\Config;
 use App\Entity\Contact;
 use App\Entity\Language;
 use App\Entity\Message;
+use App\Entity\Notification;
 use App\Entity\Participation;
 use App\Entity\Payment;
 use App\Entity\Restaurant;
+use App\Entity\Role;
 use App\Entity\Teacher;
 use App\Entity\Testimony;
 use App\Entity\User;
@@ -64,6 +66,7 @@ final class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Payments', 'fas fa-list', Payment::class);
 
         yield MenuItem::section('Configuration');
+        yield MenuItem::linkToCrud('Role', 'fas fa-list', Role::class);
         yield MenuItem::linkToCrud('Config', 'fas fa-list', Config::class);
         yield MenuItem::linkToCrud('Availability statues', 'fas fa-list', AvailabilityStatus::class);
         yield MenuItem::linkToCrud('Languages', 'fas fa-list', Language::class);
@@ -74,5 +77,6 @@ final class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Message', 'fas fa-list', Message::class);
         yield MenuItem::linkToCrud('Testimony', 'fas fa-list', Testimony::class);
         yield MenuItem::linkToCrud('Contact', 'fas fa-list', Contact::class);
+        yield MenuItem::linkToCrud('Notification', 'fas fa-list', Notification::class);
     }
 }

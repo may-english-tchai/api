@@ -12,6 +12,7 @@ use ApiPlatform\Metadata\Put;
 use App\Repository\TestimonyRepository;
 use App\Trait\NameEntityTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
     operations: [
@@ -21,7 +22,8 @@ use Doctrine\ORM\Mapping as ORM;
         new Post(security: 'is_granted("ROLE_USER")'),
         new Patch(security: 'is_granted("ROLE_USER") || object.getFromUser() === user'),
         new Delete(security: 'is_granted("ROLE_USER") || object.getFromUser() === user'),
-    ]
+    ],
+    denormalizationContext: ['groups' => ['write:testimony', 'write', 'name:write', 'content:write']]
 )]
 #[ORM\Entity(repositoryClass: TestimonyRepository::class)]
 class Testimony extends Content
@@ -29,6 +31,7 @@ class Testimony extends Content
     use NameEntityTrait;
 
     #[ORM\ManyToOne]
+    #[Groups('testimony')]
     private ?User $fromUser = null;
 
     public function getFromUser(): ?User

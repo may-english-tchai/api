@@ -3,12 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Patch;
-use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
 use App\Interface\EntityInterface;
 use App\Repository\AvailabilityStatusRepository;
 use App\Trait\CodeEntityTrait;
@@ -21,10 +17,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     operations: [
         new Get(security: 'is_granted("PUBLIC_ACCESS")'),
         new GetCollection(security: 'is_granted("PUBLIC_ACCESS")'),
-        new Put(),
-        new Post(),
-        new Patch(),
-        new Delete(),
     ],
     security: 'is_granted("ROLE_ADMIN")'
 )]
